@@ -2,7 +2,6 @@ import glob
 import os
 import numpy as np
 import math
-import matplotlib.pyplot as plt
 import pandas as pd
 
 # TODO: sction classes could be rewritten using inheritancee

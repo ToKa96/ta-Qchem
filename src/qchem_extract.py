@@ -4,6 +4,8 @@ import numpy as np
 import math
 import pandas as pd
 
+# TODO: Write Docstring!
+#
 class Extract:
     section_start = ''
     section_end = ''
@@ -59,7 +61,7 @@ class ExtractRem(Extract):
         section_end = "$end"
 
         def __init__(self):
-            Extract.__init__()
+            Extract.__init__(self)
 
         def readLine(self, line):
                 """
@@ -139,6 +141,7 @@ class ExtractExcitation(Extract):
         mult_conv_match = "Excited state"
         exc_energy_match = 'Excitation energy:'
         osc_strength_match = 'Osc. strength:'
+        term_match = 'Term symbol:'
 
         def __init__(self):
                 Extract.__init__(self)
@@ -147,6 +150,9 @@ class ExtractExcitation(Extract):
                         'Osc. strength': [],
                         'converged': [],
                         'multiplicity': [],
+                        'term': [],
+                        'symmetry': [],
+                        'state': [],
                 }
 
         def readLine(self, line):
@@ -191,6 +197,11 @@ class ExtractExcitation(Extract):
                         else:
                                 self.data['converged'].append(False)
 
+                if ExtractExcitation.term_match in line:
+                    split = line.split()[2:5]
+                    self.data['symmetry'].append(split[-1])
+                    self.data['state'].append(split[0])
+                    self.data['term'].append(' '.join(split))
                 if ExtractExcitation.exc_energy_match in line:
                         self.data['Excitation energy'].append(float(line.split()[-2]))
                         self.data['Osc. strength'].append(np.nan)
@@ -198,6 +209,45 @@ class ExtractExcitation(Extract):
                 if ExtractExcitation.osc_strength_match in line:
                         self.data['Osc. strength'][-1] = float(line.split()[-1])
 
+        def getDataFrame(self):
+            return df
+
+class ExtractPumpProbe(Extract):
+    section_start = 'Pump-Probe Results'
+    section_end = 'End of Pump-Probe Results'
+    
+    state_start = 'Transitions from pumped state'
+
+    def __init__(self):
+        Extract.__init__(self)
+        self.data = {}
+        self.cur_pump_key = None
+
+    def readLine(self, line):
+        if not self.section:
+            self.checkStart(line)
+        else:
+            if not self.finished:
+                self.getData(line)
+
+
+    def getData(self, line):
+            if ExtractPumpProbe.state_start in line:
+                self.cur_pump_key = line.split(maxsplit=4)[-1].rstrip('\n')
+                self.data[self.cur_pump_key]={}
+            else:
+                try:
+                    probe_state = ' '.join(line.split()[:3])
+                    probe_values = [float(x) for x in line.split()[3:]]
+                    self.data[self.cur_pump_key][probe_state]=probe_values
+                except (ValueError, KeyError):
+                    self.checkEnd(line)
+
+    def getDataFrame(self):
+        df = pd.DataFrame.from_dict(self.data).stack().to_frame()
+        df = pd.DataFrame(df[0].values.tolist(),columns=['E_pr - E_pu', 'osc. str.', 'overlap'], index=df.index)
+        df = df.dropna()
+        return df
 
 class ExtractOther(Extract):
     """
@@ -219,7 +269,8 @@ class ExtractOther(Extract):
             except (TypeError, ValueError):
                 self.data['cpu'].append(np.nan)
 
-
+# TODO: Write docstrings
+#
 class ExtractFile:
     """
     
@@ -242,12 +293,21 @@ class ExtractFile:
 
             with open(filename, 'r') as outfile:
                     for line in outfile:
-                            if not exRem.rem_finished:
+                            if not exRem.finished:
                                     exRem.readLine(line)
-                            elif not exExc.exc_finished:
+                            elif not exExc.finished:
                                     exExc.readLine(line)
                             else:
                                 exOth.readLine(line)
+
+#            
+#            excDf = pd.DataFrame(exExc.data)
+#            excDf['filename'] = [filename for x in excDf.index]
+#            index = pd.MultiIndex.from_frame(excDf[['filename', 'term']])
+#            testDf = excDf.set_index(['filename', 'term'])
+#            print(testDf)
+            # remDf = pd.DataFrame(exRem.data)
+            # print(remDf)
 
 
             for key in ['BASIS', 'METHOD']:
@@ -266,6 +326,31 @@ class ExtractFile:
                 self.data['cpu'].append(exOth.data['cpu'][0])
             else:
                 self.data['cpu'].append(np.nan)
+            
+            pd.DataFrame()
+
+    def extractFilePP(self, filename):
+        cur_data = adcData(filename)
+        
+        exRem = ExtractRem()
+        exPuP = ExtractPumpProbe()
+        exOth = ExtractOther()
+
+        with open(filename, 'r') as outfile:
+            for line in outfile:
+                if not exRem.finished:
+                    exRem.readLine(line)
+                elif not exPuP.finished:
+                    exPuP.readLine(line)
+                else:
+                    exOth.readLine(line)
+
+        cur_data.setPumpProbeData(exPuP.getDataFrame())
+        cur_data.setCalcAttr(exRem)
+        cur_data.setOtherAttr(exOth)
+
+        return cur_data
+
 
     def extractFolder(self, dirPath):
         """"""
@@ -274,11 +359,53 @@ class ExtractFile:
             print('extracting: {} ...'.format(filename))
             self.extractFile(filename)
 
+    def extractFolderPP(self, dirPath):
+        """"""
+        os.chdir(dirPath)
+        data = {}
+        for filename in glob.glob("*.out"):
+            print('extracting: {} ...'.format(filename))
+            data[filename] = self.extractFilePP(filename)
+
     def dictToDataFrame(self):
            return pd.DataFrame(self.data)
 
 
+class adcData:
+
+    def __init__(self, filename):
+        self.filename = filename
+
+    def setPumpProbeData(self, df):
+        self.pumpProbe = df
+
+    def setCalcAttr(self, exRem):
+        for key in exRem.data:
+            if key in ['BASIS', 'METHOD']:
+                self.__dict__[key] = exRem.data[key]
+
+    def setOtherAttr(self,exOth):
+        for key in exOth.data:
+            self.__dict__[key] = exOth.data[key][0]
+
+    def __str__(self):
+        objStr = '==== adcData =====\n'
+        print(self.__dict__)
+        for key in self.__dict__:
+            if not isinstance(self.__dict__[key], pd.DataFrame):
+                objStr += '    {}: {}\n'.format(key, self.__dict__[key])
+            else:
+                objStr += '-- {} --\n'.format(key)
+                objStr += self.__dict__[key].to_string()
+                objStr += '\n'
+                objStr += '-------\n'
+        return objStr
+
 if __name__ == "__main__":
-    filepath = '/export/home/ccprak10/scripts/qchem_extract/data'
+    #filepath = '/export/home/ccprak10/scripts/qchem_extract/data'
+    #exFile = ExtractFile()
+    #exFile.extractFolder(filepath)
+    filepath = '/export/home/ccprak10/scripts/qchem_extract/data/gs_631ppGss.out'
     exFile = ExtractFile()
-    exFile.extractFolder(filepath)
+    data = exFile.extractFilePP(filepath)
+    print(data)
