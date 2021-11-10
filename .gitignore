@@ -1,5 +1,8 @@
+# folder with testing and other stuff that is to be ignored
 others/
 
+# vim swp files
+*.swp
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
