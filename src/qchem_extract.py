@@ -210,6 +210,8 @@ class ExtractExcitation(Extract):
                         self.data['Osc. strength'][-1] = float(line.split()[-1])
 
         def getDataFrame(self):
+            df = pd.DataFrame.from_dict(self.data)
+            df = df.set_index('term')
             return df
 
 class ExtractPumpProbe(Extract):
@@ -260,8 +262,6 @@ class ExtractOther(Extract):
             'cpu':[]
         }
     
-    # FIXME:     will not append False if File does not contain the completed line!
-    #            Ideas to Fix it? Put here! 
     def readLine(self, line):
         if ExtractOther.cpu_time_match in line:
             try:
@@ -329,6 +329,67 @@ class ExtractFile:
             
             pd.DataFrame()
 
+    def extractFileNew(self,filename):
+
+        cur_data = adcData(filename)
+
+        exRem = ExtractRem()
+        exOth = ExtractOther()
+
+        with open(filename, 'r') as outfile:
+            for line in outfile:
+                if not exRem.finished:
+                    exRem.readLine(line)
+                else:
+                    break
+            if 'FANO'.casefold() in exRem.data['METHOD'].casefold():
+                cur_data.setData(['pump', 'probe', 'pump-probe'], self.extractFANO(outfile))
+            elif 'adc' in exRem.data['METHOD'].casefold():
+                cur_data.setData('adc', self.extractADC(outfile))
+            else:
+                raise KeyError('Unexpected METHOD encountered in .out file')
+
+            for line in outfile:
+                exOth.readLine(line)
+
+        cur_data.setOtherAttr(exRem, exOth)
+
+        return cur_data
+
+    def extractFANO(self, outfile):
+        
+        exADC = ExtractExcitation()
+        exCVS = ExtractExcitation()
+        exPuP = ExtractPumpProbe()
+
+        for line in outfile:
+            if not exADC.finished:
+                exADC.readLine(line)
+            
+            elif not exCVS.finished:
+                exCVS.readLine(line)
+
+            elif not exPuP.finished:
+                exPuP.readLine(line)
+            else:
+                break
+
+        return exADC.getDataFrame(), exCVS.getDataFrame(), exPuP.getDataFrame()
+
+
+    def extractADC(self, outfile):
+        
+        exADC = ExtractExcitation()
+
+        for line in outfile:
+            if not exADC.finished:
+                exADC.readLine(line)
+            else:
+                break
+
+        return exADC.getDataFrame()
+
+
     def extractFilePP(self, filename):
         cur_data = adcData(filename)
         
@@ -352,6 +413,16 @@ class ExtractFile:
         return cur_data
 
 
+    def extractFolderNew(self, dirPath):
+        """"""
+        
+        folder_data = {}
+
+        os.chdir(dirPath)
+        for filename in glob.glob("*.out"):
+            print('extracting: {} ...'.format(filename))
+            folder_data[filename] = self.extractFileNew(filename)
+    
     def extractFolder(self, dirPath):
         """"""
         os.chdir(dirPath)
@@ -376,21 +447,21 @@ class adcData:
     def __init__(self, filename):
         self.filename = filename
 
-    def setPumpProbeData(self, df):
-        self.pumpProbe = df
+    def setData(self, keys, dfs):
+        if isinstance(keys, list) or  isinstance(dfs, list):
+            for key, df in zip(keys, dfs):
+                self.__dict__[key] = df
+        else:
+            self.__dict__[keys] = dfs
 
-    def setCalcAttr(self, exRem):
-        for key in exRem.data:
-            if key in ['BASIS', 'METHOD']:
-                self.__dict__[key] = exRem.data[key]
-
-    def setOtherAttr(self,exOth):
-        for key in exOth.data:
-            self.__dict__[key] = exOth.data[key][0]
+    def setOtherAttr(self, *args):
+        for obj in args:
+            for key in obj.data:
+                self.__dict__[key] = obj.data[key]
 
     def __str__(self):
         objStr = '==== adcData =====\n'
-        print(self.__dict__)
+        # print(self.__dict__)
         for key in self.__dict__:
             if not isinstance(self.__dict__[key], pd.DataFrame):
                 objStr += '    {}: {}\n'.format(key, self.__dict__[key])
@@ -405,7 +476,6 @@ if __name__ == "__main__":
     #filepath = '/export/home/ccprak10/scripts/qchem_extract/data'
     #exFile = ExtractFile()
     #exFile.extractFolder(filepath)
-    filepath = '/export/home/ccprak10/scripts/qchem_extract/data/gs_631ppGss.out'
+    filepath = '/export/home/ccprak10/scripts/qchem_extract/data/'
     exFile = ExtractFile()
-    data = exFile.extractFilePP(filepath)
-    print(data)
+    data = exFile.extractFolderNew(filepath)
