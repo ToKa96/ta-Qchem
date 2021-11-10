@@ -275,61 +275,8 @@ class ExtractFile:
     """
     
     """
-    def __init__(self):
-            self.data = {
-                    'filename': [],
-                    'BASIS': [],
-                    'METHOD': [],
-                    'cpu': []
-            }
 
-    def extractFile(self, filename):
-
-            self.data['filename'].append(filename)
-
-            exRem = ExtractRem()
-            exExc = ExtractExcitation()
-            exOth = ExtractOther()
-
-            with open(filename, 'r') as outfile:
-                    for line in outfile:
-                            if not exRem.finished:
-                                    exRem.readLine(line)
-                            elif not exExc.finished:
-                                    exExc.readLine(line)
-                            else:
-                                exOth.readLine(line)
-
-#            
-#            excDf = pd.DataFrame(exExc.data)
-#            excDf['filename'] = [filename for x in excDf.index]
-#            index = pd.MultiIndex.from_frame(excDf[['filename', 'term']])
-#            testDf = excDf.set_index(['filename', 'term'])
-#            print(testDf)
-            # remDf = pd.DataFrame(exRem.data)
-            # print(remDf)
-
-
-            for key in ['BASIS', 'METHOD']:
-                try:
-                    self.data[key].append(exRem.data[key])
-                except KeyError:
-                    self.data[key].append(None)
-            for key in exExc.data.keys():
-                    try:
-                            self.data[key].append(exExc.data[key])
-                    except KeyError:
-                            self.data[key] = []
-                            self.data[key].append(exExc.data[key])
-            
-            if exOth.data['cpu']:
-                self.data['cpu'].append(exOth.data['cpu'][0])
-            else:
-                self.data['cpu'].append(np.nan)
-            
-            pd.DataFrame()
-
-    def extractFileNew(self,filename):
+    def extractFile(self,filename):
 
         cur_data = adcData(filename)
 
@@ -389,31 +336,7 @@ class ExtractFile:
 
         return exADC.getDataFrame()
 
-
-    def extractFilePP(self, filename):
-        cur_data = adcData(filename)
-        
-        exRem = ExtractRem()
-        exPuP = ExtractPumpProbe()
-        exOth = ExtractOther()
-
-        with open(filename, 'r') as outfile:
-            for line in outfile:
-                if not exRem.finished:
-                    exRem.readLine(line)
-                elif not exPuP.finished:
-                    exPuP.readLine(line)
-                else:
-                    exOth.readLine(line)
-
-        cur_data.setPumpProbeData(exPuP.getDataFrame())
-        cur_data.setCalcAttr(exRem)
-        cur_data.setOtherAttr(exOth)
-
-        return cur_data
-
-
-    def extractFolderNew(self, dirPath):
+    def extractFolder(self, dirPath):
         """"""
         
         folder_data = {}
@@ -421,26 +344,8 @@ class ExtractFile:
         os.chdir(dirPath)
         for filename in glob.glob("*.out"):
             print('extracting: {} ...'.format(filename))
-            folder_data[filename] = self.extractFileNew(filename)
+            folder_data[filename] = self.extractFile(filename)
     
-    def extractFolder(self, dirPath):
-        """"""
-        os.chdir(dirPath)
-        for filename in glob.glob("*.out"):
-            print('extracting: {} ...'.format(filename))
-            self.extractFile(filename)
-
-    def extractFolderPP(self, dirPath):
-        """"""
-        os.chdir(dirPath)
-        data = {}
-        for filename in glob.glob("*.out"):
-            print('extracting: {} ...'.format(filename))
-            data[filename] = self.extractFilePP(filename)
-
-    def dictToDataFrame(self):
-           return pd.DataFrame(self.data)
-
 
 class adcData:
 
@@ -478,4 +383,4 @@ if __name__ == "__main__":
     #exFile.extractFolder(filepath)
     filepath = '/export/home/ccprak10/scripts/qchem_extract/data/'
     exFile = ExtractFile()
-    data = exFile.extractFolderNew(filepath)
+    data = exFile.extractFolder(filepath)
