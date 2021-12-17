@@ -1,5 +1,7 @@
-# folder with testing and other stuff that is to be ignored
+# folder with experiments and other stuff that is to be ignored
 others/
+tests/
+data/
 
 # vim swp files
 *.swp
