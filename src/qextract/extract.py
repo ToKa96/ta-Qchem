@@ -2,7 +2,6 @@
 
 Author: Tobias Kaczun
 """
-import re
 import glob
 import os
 import numpy as np
@@ -114,6 +113,13 @@ class ExtractRem(Extract):
         self.data[line.split()[0].upper()] = line.split()[-1]
 
     def getBASISfromFN(self, filename):
+        """[summary]
+
+        Parameters
+        ----------
+        filename : [type]
+            [description]
+        """
         basis = filename.split('_')[-1].split('.')[0]
 
         old_char = ['p', 's']
@@ -235,12 +241,31 @@ class ExtractExcitation(Extract):
             self.data['Osc. strength'][-1] = float(line.split()[-1])
 
     def getDataFrame(self):
+        """[summary]
+
+        Returns
+        -------
+        [type]
+            [description]
+        """
         df = pd.DataFrame.from_dict(self.data)
         df = df.set_index('term')
         return df
 
 
 class ExtractPumpProbe(Extract):
+    """[summary]
+
+    Parameters
+    ----------
+    Extract : [type]
+        [description]
+
+    Returns
+    -------
+    [type]
+        [description]
+    """
     section_start = 'Pump-Probe Results'
     section_end = 'End of Pump-Probe Results'
 
@@ -252,6 +277,13 @@ class ExtractPumpProbe(Extract):
         self.cur_pump_key = None
 
     def readLine(self, line):
+        """[summary]
+
+        Parameters
+        ----------
+        line : [type]
+            [description]
+        """
         if not self.section:
             self.checkStart(line)
         else:
@@ -259,6 +291,13 @@ class ExtractPumpProbe(Extract):
                 self.getData(line)
 
     def getData(self, line):
+        """[summary]
+
+        Parameters
+        ----------
+        line : [type]
+            [description]
+        """
         if ExtractPumpProbe.state_start in line:
             self.cur_pump_key = line.split(maxsplit=4)[-1].rstrip('\n')
             self.data[self.cur_pump_key] = {}
@@ -271,6 +310,13 @@ class ExtractPumpProbe(Extract):
                 self.checkEnd(line)
 
     def getDataFrame(self):
+        """[summary]
+
+        Returns
+        -------
+        [type]
+            [description]
+        """
         df = pd.DataFrame.from_dict(self.data).stack().to_frame()
         df = pd.DataFrame(df[0].values.tolist(), columns=[
                           'Excitation energy', 'Osc. strength', 'overlap'], index=df.index)
@@ -294,6 +340,18 @@ class ExtractOther(Extract):
         }
 
     def readLine(self, line):
+        """[summary]
+
+        Parameters
+        ----------
+        line : [type]
+            [description]
+
+        Raises
+        ------
+        NotEndOfCalcError
+            [description]
+        """
         if ExtractOther.cpu_time_match in line:
             try:
                 self.data['cpu'].append(
@@ -318,6 +376,18 @@ class ExtractFile:
     """
 
     def extractFile(self, filename):
+        """[summary]
+
+        Parameters
+        ----------
+        filename : [type]
+            [description]
+
+        Returns
+        -------
+        [type]
+            [description]
+        """
 
         with open(filename, 'r') as outfile:
 
@@ -326,6 +396,20 @@ class ExtractFile:
             return cur_data
 
     def extractJob(self, outfile, filename):
+        """[summary]
+
+        Parameters
+        ----------
+        outfile : [type]
+            [description]
+        filename : [type]
+            [description]
+
+        Returns
+        -------
+        [type]
+            [description]
+        """
 
         cur_data = adcData.adcData(filename)
 
@@ -354,6 +438,18 @@ class ExtractFile:
         return cur_data
 
     def extractREM(self, outfile):
+        """[summary]
+
+        Parameters
+        ----------
+        outfile : [type]
+            [description]
+
+        Returns
+        -------
+        [type]
+            [description]
+        """
 
         exRem = ExtractRem()
 
@@ -366,6 +462,18 @@ class ExtractFile:
         return exRem
 
     def extractFANO(self, outfile):
+        """[summary]
+
+        Parameters
+        ----------
+        outfile : [type]
+            [description]
+
+        Returns
+        -------
+        [type]
+            [description]
+        """
 
         exADC = ExtractExcitation()
         exCVS = ExtractExcitation()
@@ -386,6 +494,18 @@ class ExtractFile:
         return exCVS.getDataFrame(), exADC.getDataFrame(), exPuP.getDataFrame()
 
     def extractADC(self, outfile):
+        """[summary]
+
+        Parameters
+        ----------
+        outfile : [type]
+            [description]
+
+        Returns
+        -------
+        [type]
+            [description]
+        """
 
         exADC = ExtractExcitation()
 
@@ -398,7 +518,20 @@ class ExtractFile:
         return exADC.getDataFrame()
 
     def extractFolder(self, dirPath, pattern='*.out'):
-        """"""
+        """[summary]
+
+        Parameters
+        ----------
+        dirPath : [type]
+            [description]
+        pattern : str, optional
+            [description], by default '*.out'
+
+        Returns
+        -------
+        [type]
+            [description]
+        """
 
         folder_data = {}
 

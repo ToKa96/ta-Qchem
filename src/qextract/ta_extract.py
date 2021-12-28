@@ -1,46 +1,82 @@
 """
+reading and storing as .hdf of TA data calculated with Qchem using ADC pump-probe.
+
+This module is intended for a certain data structure:
+
+root_dir/timestep_dir/structureA_bla.out
+
+eg.:
+
+pyrazine_TA/
+|---0fs/
+|   |---StructureA_bla.out
+|   |---StructureB_bla.out
+|---20fs/
+|   |---StructureC_bla.out
+|   |---StructureD_bla.out
+
+This will result in the following structure in the hdf:
+
+/ (root)
+|---0fs/
+|   |---StructureA/
+|   |   |---pump1/
+|   |   |   |---'exc_energy'    (Dataset)   
+|   |   |   |---'osc_strength'  (Dataset)
+|   |   |---pump2/
+|   |   |   ...
+...
+With only the first part of the .out Filename up to the first '_' will be used as group name in the hdf File
 
 Author: Tobias Kaczun
 """
 
 import os
 import glob
-import numpy as np
-import pandas as pd
 import h5py
 
-from qextract import extract, adcData
+from qextract import extract
 
 # TODO: write docstrings
 
+def writeHDF5(outFilepath, hdf5_filename):
+    TAtoHDF5().createHDF5(outFilepath, hdf5_filename)
 
 class TAtoHDF5:
+    """
+    class to read in excitation energies and oscillator strengths of a directory and store them in an hdf5 File.
+    """
 
-    def __init__(self, pathname):
-        self.pathname = pathname
-
-    # TODO: option to choose where to save the HDF5, currently will be created
-    # in the cwd
-    def createHDF5(self, filename, **kwargs):
+    def createHDF5(self, pathname, filename, adiabatic=True, **kwargs):
         """
+        creates an hdf5 File containing excitation energies and oscillator strengths of the pump_probe calculation in the given directory.
         
-
         Parameters
         ----------
-        filename : TYPE
-            DESCRIPTION.
-        **kwargs : TYPE
-            DESCRIPTION.
+        pathname : str
+            path to directory that is to be read
+        filename : str
+            filename (and path) for the hdf5 that is to be created
 
         Returns
         -------
         None.
 
         """
+        self.pathname = pathname
+        
+        if self.pathname[-1] != '/':
+            self.pathname = self.pathname + '/'
+        
         outfiles = self.getOutputFiles()
 
         with h5py.File(filename, 'a', **kwargs) as hdf5File:
             self.iterateFiles(outfiles, hdf5File)
+            
+            if adiabatic:
+                self.setAdibaticPop(hdf5File)
+            
+            self.setDiabaticPop(hdf5File)
 
     def getOutputFiles(self):
         """
@@ -106,9 +142,6 @@ class TAtoHDF5:
                 hdf5File.create_dataset(dataset_name + 'osc_strength',
                                         data=currentFileData.pump_probe.loc[pump, 'Osc. strength'].to_numpy())
 
-    # FIXME: this will best be put separte with everything that directly acts on the
-    # HDF5 file ?
-
     def getGroupfromPath(self, filepath):
         """
         generates the hdf5 groups for the data of the file based on its path
@@ -132,18 +165,74 @@ class TAtoHDF5:
         filename = groupstr.split('/')[-1]
         # should a filename start with '_' it will not append any structure name to the 
         # the groupstr
-        noStructureName = '_' + '_'.join(filename.split('_')[1:])
+        if not filename.split('_')[1:]:
+        # Not sure whether this might create problems in some special cases
+            noStructureName = ''
+        else:
+            noStructureName = '_' + '_'.join(filename.split('_')[1:])
         # This might create bugs if a directory and a structure have the
         # same name
         groupstr = groupstr.replace(noStructureName, '')
         
+        groupstr = groupstr.replace('.out', '')
+        
         if groupstr[-1] != '/':
             groupstr = groupstr + '/'
 
+        if groupstr[0]!='/':
+            groupstr = '/' + groupstr
+
         return groupstr
+    
+    def setDiabaticPop(self, hdf5File):
+        """extracts diabatic population data from structur_pop.dat files and adds them 
+        to the hdf5 File
+
+        Parameters
+        ----------
+        hdf5File : h5py File obj
+            hdf File to which the data is to be appanded
+        """
+        self._setPop(hdf5File, 'diapop')
+        
+    def setAdibaticPop(self, hdf5File):
+        """[summary]
+
+        Parameters
+        ----------
+        hdf5File : [type]
+            [description]
+        """
+        self._setPop(hdf5File, 'pop')
+                    
+    def _setPop(self, hdf5File, pattern):
+        """[summary]
+
+        Parameters
+        ----------
+        hdf5File : [type]
+            [description]
+        pattern : [type]
+            [description]
+        """
+        popFiles = glob.glob(self.pathname + '*_' + pattern + '.dat')
+        
+        for popFile in popFiles:
+            # This might again lead to bugs in case of unusual file/structur names!
+            structur = os.path.basename(popFile).split('_')[0]
+            with open(popFile) as pFile:
+                for line in pFile:
+                    try:
+                        time = float(line.split()[0])
+                        pop = [float(i) for i in line.split()[1:]]
+                    
+                        if hdf5File['{time}/{structur}'.format(time=time,structur=structur)]:
+                            hdf5File.create_dataset('/{time}/{structur}/{pattern}'.format(time=time,structur=structur, pattern=pattern), data=pop)
+                    
+                    except (IndexError):
+                        pass
 
 
 if __name__ == "__main__":
-    tc = TAtoHDF5('/export/home/tkaczun/scripts/qextract/data/ta_data_test')
-    tc.createHDF5('test.hdf5')
+    TAtoHDF5().createHDF5('/export/home/tkaczun/scripts/qextract/data/ta_data_test', 'test.hdf5')
     os.remove('test.hdf5')
