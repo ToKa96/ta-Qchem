@@ -38,9 +38,12 @@ import h5py
 from qextract import extract
 
 # TODO: write docstrings
+# TODO: parallelization and
+# TODO: 'append mode'
+# TODO: command line call
 
-def writeHDF5(outFilepath, hdf5_filename):
-    TAtoHDF5().createHDF5(outFilepath, hdf5_filename)
+def writeHDF5(outFilepath, hdf5_filename, adiabatic=True):
+    TAtoHDF5().createHDF5(outFilepath, hdf5_filename, adiabatic=adiabatic)
 
 class TAtoHDF5:
     """
@@ -229,7 +232,8 @@ class TAtoHDF5:
                         if hdf5File['{time}/{structur}'.format(time=time,structur=structur)]:
                             hdf5File.create_dataset('/{time}/{structur}/{pattern}'.format(time=time,structur=structur, pattern=pattern), data=pop)
                     
-                    except (IndexError):
+                    except (IndexError, KeyError):
+                        print('Index or Key Error encountered in {time}/{structur}, {pattern}'.format(time=time, structur=structur, pattern=pattern))
                         pass
 
 
