@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+# from dataclasses import dataclass
 import enum
 import h5py
 import traceback
@@ -27,30 +27,17 @@ def lorentzian(x, exc, osc, std_devi=0.4):
         return osc / (1 + np.power((x - exc) / (std_devi/2), 2))
 
 
-# def getMesh(filepath, wavelength_arr, time_arr, **kwargs):
+def norm_frob(array):
+    return array / np.linalg.norm(array, ord='fro')
 
-#     kwargs = kwargs
+def meanError(ta, tmp):
+    return abs(ta-tmp).mean()
 
-#     return ConstructMesh(wavelength_arr, time_arr, **kwargs)._getMesh(filepath).z
+def relError(ta, tmp):
+    return (abs(ta-tmp) / ta).mean()
 
-
-# def getTA(filepath, wavelength_arr, time_arr, **kwargs):
-
-#     kwargs = kwargs    
-
-#     return ConstructMesh(wavelength_arr, time_arr, **kwargs)._getMesh(filepath)
-
-# def getTAbyStruct(filepath, wavelength_arr, time_arr, structurname=None, **kwargs):
-
-#     kwargs = kwargs    
-
-#     return ConstructMesh(wavelength_arr, time_arr, **kwargs)._getMesh(filepath, structurname=structurname)
-
-def norm_max(array):
-    return array / array.max()
-
-def norm_sum(array):
-    return array /array.sum()
+def frobeniusDist(ta, tmp):
+    return np.sqrt(np.power(ta-tmp, 2).sum())
 class TA():
 
     def __init__(self, x, y, z, tensor, x_unit=None, y_unit=None, z_unit=None) -> None:
@@ -63,91 +50,31 @@ class TA():
         self.y_unit = y_unit
         self.z_unit = z_unit
         
-    def convergence(self, criterion, norm=norm_max):
-        if norm == 'max':
-            norm=norm_max
-        if norm == 'sum':
-            norm=norm_sum
+    def convergence(self, criterion, norm=norm_frob, errorfunc=frobeniusDist):
         ta = norm(self.tensor[...,0])
         for i in range(2, self.tensor.shape[-1]):
             # TODO: Normalization of arrays still mising, convergence can not be achieved 
             #       this way
             tmp = np.copy(ta)
             ta = norm(self.tensor[...,:i].sum(axis=-1))
-            mse = (np.square(ta-tmp)).mean()
-            if mse < criterion:
-                return ta, mse, i
+            err = errorfunc(tmp, ta)
+            if err < criterion:
+                return ta, err, i
         # this should be deleted at some point:
         print('convergence criterion not met!')
-        return ta, mse, i
-    
-    def convergence_maxSE(self, criterion, norm="max"):
-        if norm == 'max':
-            norm=norm_max
-        if norm == 'sum':
-            norm=norm_sum
-        
-        ta = norm(self.tensor[...,0])
-        for i in range(2, self.tensor.shape[-1]):
-            # TODO: Normalization of arrays still mising, convergence can not be achieved 
-            #       this way
-            tmp = np.copy(ta)
-            ta = norm(self.tensor[...,:i].sum(axis=-1))
-            mse = (np.square(ta-tmp)).max()
-            if mse < criterion:
-                return ta, mse, i
-        # this should be deleted at some point:
-        print('convergence criterion not met!')
-        return ta, mse, i
-
-    def getIndexValue(self, arr, value):
-        res = np.where(arr == value)[0]
-        if res.size == 0:
-            res = find_nearest(arr, value)
-                
-        return res 
-
-    def loc(self, *args):
-        if isinstance(args, list):
-            if len(args) == 1:
-                return self._loc1(*args)
-
-            elif len(args) == 2:
-                return self._loc2(*args)
-            else:
-                raise TypeError(
-                    'wrong amount of arguments given! expected 1 or 2')
-        else:
-            return self._loc1(*args)
-
-    def _loc1(self, arg):
-        if isinstance(arg, list):
-            if len(arg) == 1:
-                return self.z[:, self.getIndexValue(self.x, arg[0])]
-
-            elif len(arg) == 2:
-                return self.z[:, slice(self.getIndexValue(self.x, arg[0]), self.getIndexValue(self.x, arg[1]))]
-
-            elif len(arg) == 3:
-                start = self.getIndexValue(self.x, arg[0])
-                stop = self.getIndexValue(self.x, arg[1])
-                diff = start - self.getIndexValue(self.x, arg[0]+arg[2])
-                return self.z[:,start:stop:diff]
-
-            else:
-                raise TypeError('too long array given max: [start, end, step]')
-        else:
-            return self.z[:, self.getIndexValue(self.x, arg)]
-
-    # def _loc2(self, wvl, time):
+        return ta, err, i
 
 
 class GetTA():
 
-    def __init__(self, filepath, wavelength_arr, time_arr=None, diabatic=False, std_devi=0.4, trajectories=None, trajectory_mode='strict') -> None:
+    def __init__(self, filepath, wavelength_arr, time_arr=None, std_devi=0.4, trajectories=None, trajectory_mode='strict', diabatic_state=None) -> None:
         self.std_devi = 0.4
         self.wavelength_arr = wavelength_arr
-        self.diabatic = diabatic
+        if isinstance(diabatic_state, int):
+            self.diabatic=True
+            self.diabatic_state=diabatic_state
+        else:
+            self.diabatic=False
 
         with h5py.File(filepath, 'r') as hdf5File:
             self.hdf5File = hdf5File
@@ -163,7 +90,7 @@ class GetTA():
             if trajectories is not None:
                 self.trajectories=trajectories
             else:
-                self.trajectories = self._getTrajectories(hdf5File, trajectory_mode=trajectory_mode)
+                self.trajectories=self._getTrajectories(hdf5File, trajectory_mode=trajectory_mode)
             
             self.ta = self._getTA()
             
@@ -206,11 +133,16 @@ class GetTA():
         k = 1
 
         if self.diabatic:
-            poptype = 'diapop'
-            k = 2
+            diapop = structurGroup['diapop'][:]
+            truth_array = np.where(diapop==1)
+            if len(truth_array) > 0:
+                if truth_array[0] != self.diabatic_state:
+                    return np.zeros_like(self.wavelength_arr)
+            else:
+                return np.zeros_like(self.wavelength_arr)
 
         for i, pop in enumerate(structurGroup[poptype]):
-            if pop > 0:
+            if pop == 1:
                 # S1 (i = 1) is mapped on 2_(1)_XX as ground state is 1_(1)_XX therefore i+1
                 pumpName = '{}_(1)_A'.format(i+k)
                 try:
@@ -284,15 +216,17 @@ class GetTA():
 
 
 if __name__ == "__main__":
-    hdf5_path = '/export/home/tkaczun/xray-ta/Pyrazine/ta_TRAJ10.hdf5'
+    hdf5_path = '/export/home/tkaczun/xray-ta/Pyrazine/ta_TRAJ100.hdf5'
     time_arr = np.arange(0, 200, 2)
     wavelength_arr = np.linspace(280, 290, 100)
 
-    ta_data = GetTA(hdf5_path, wavelength_arr, time_arr=time_arr).ta
-    
-    for i in [1e-10, 1e-11, 1e-12]:
-        ta , mse, num = ta_data.convergence(i)
-        print(mse, num)
+#    ta_data = GetTA(hdf5_path, wavelength_arr, time_arr=time_arr).ta
+    dia_data = GetTA(hdf5_path, wavelength_arr, time_arr=time_arr, diabatic_state=0)    
+    # for error in [frobeniusDist]:
+        # print('------- {} ------'.format(error.__name__))
+        # for i in [0.1, 0.05, 0.01, 0.008, 0.005]:
+            # ta , mse, num = ta_data.convergence(i, norm=norm_frob,errorfunc=error)
+            # print(mse, num)
     
     # print(ta_data.tensor.shape)
     # print(ta_data.z)
