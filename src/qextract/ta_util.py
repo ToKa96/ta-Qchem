@@ -12,11 +12,14 @@ import scipy as sp
 #       at different times!
 
 # `values` should be sorted
+
+
 def find_nearest(array, value):
     array = np.asarray(array)
     idx = (np.abs(array - value)).argmin()
-    
+
     return idx
+
 
 def lorentzian(x, exc, osc, std_devi=0.4):
     if np.isnan(exc) or np.isnan(osc):
@@ -30,33 +33,37 @@ def lorentzian(x, exc, osc, std_devi=0.4):
 def norm_frob(array):
     return array / np.linalg.norm(array, ord='fro')
 
+
 def meanError(ta, tmp):
     return abs(ta-tmp).mean()
+
 
 def relError(ta, tmp):
     return (abs(ta-tmp) / ta).mean()
 
+
 def frobeniusDist(ta, tmp):
     return np.sqrt(np.power(ta-tmp, 2).sum())
+
+
 class TA():
 
-    def __init__(self, x, y, z, tensor, x_unit=None, y_unit=None, z_unit=None) -> None:
+    def __init__(self, energy, time, traj, tensor, x_unit=None, y_unit=None) -> None:
         self.tensor = tensor
         self.ta = np.sum(tensor, axis=2)
-        self.z = z
-        self.x = x
-        self.y = y
+        self.z = traj
+        self.e = energy
+        self.t = time.astype(np.float16)
         self.x_unit = x_unit
         self.y_unit = y_unit
-        self.z_unit = z_unit
-        
+
     def convergence(self, criterion, norm=norm_frob, errorfunc=frobeniusDist):
-        ta = norm(self.tensor[...,0])
+        ta = norm(self.tensor[..., 0])
         for i in range(2, self.tensor.shape[-1]):
-            # TODO: Normalization of arrays still mising, convergence can not be achieved 
+            # TODO: Normalization of arrays still mising, convergence can not be achieved
             #       this way
             tmp = np.copy(ta)
-            ta = norm(self.tensor[...,:i].sum(axis=-1))
+            ta = norm(self.tensor[..., :i].sum(axis=-1))
             err = errorfunc(tmp, ta)
             if err < criterion:
                 return ta, err, i
@@ -65,56 +72,61 @@ class TA():
         return ta, err, i
 
 
+# FIXME: rewrite so that it can deal with time as major group and TRAJ as minor
 class GetTA():
 
     def __init__(self, filepath, wavelength_arr, time_arr=None, std_devi=0.4, trajectories=None, trajectory_mode='strict', diabatic_state=None) -> None:
         self.std_devi = 0.4
         self.wavelength_arr = wavelength_arr
         if isinstance(diabatic_state, int):
-            self.diabatic=True
-            self.diabatic_state=diabatic_state
+            self.diabatic = True
+            self.diabatic_state = diabatic_state
         else:
-            self.diabatic=False
+            self.diabatic = False
 
         with h5py.File(filepath, 'r') as hdf5File:
             self.hdf5File = hdf5File
-            
+
             if time_arr is not None:
                 if isinstance(time_arr, np.ndarray):
-                    self.time_arr = np.asarray(['{:.1f}'.format(x) for x in time_arr])
+                    self.time_arr = np.asarray(
+                        ['{:.1f}'.format(x) for x in time_arr])
                 if isinstance(time_arr, list):
-                    self.time_arr = np.asarray(['{:.1f}'.format(x) for x in time_arr])
+                    self.time_arr = np.asarray(
+                        ['{:.1f}'.format(x) for x in time_arr])
             else:
                 self.time_arr = self._getTime(hdf5File)
 
             if trajectories is not None:
-                self.trajectories=trajectories
+                self.trajectories = trajectories
             else:
-                self.trajectories=self._getTrajectories(hdf5File, trajectory_mode=trajectory_mode)
-            
+                self.trajectories = self._getTrajectories(
+                    hdf5File, trajectory_mode=trajectory_mode)
+
             self.ta = self._getTA()
-            
+
     def _getTrajectories(self, hdf5File, trajectory_mode='strict'):
-        
+
         if trajectory_mode == 'strict':
             return self._getTrajectoriesStrict(hdf5File)
-    
+
     def _getTrajectoriesStrict(self, hdf5File):
-        
+
         # test = str(self.time_arr[0])
-        tmp_arr = np.fromiter(hdf5File[str(self.time_arr[0])].keys(), dtype='U32')
-        
+        tmp_arr = np.fromiter(
+            hdf5File[str(self.time_arr[0])].keys(), dtype='U32')
+
         for time in self.time_arr[1:]:
-            curr_arr = np.fromiter(hdf5File[time].keys(),dtype='U32')
+            curr_arr = np.fromiter(hdf5File[time].keys(), dtype='U32')
             tmp_arr = np.intersect1d(tmp_arr, curr_arr)
-            
+
         return tmp_arr
-        
+
     def _getTime(self, hdf5File):
         sorted_arr = np.fromiter(hdf5File.keys(), dtype=np.float16)
         sorted_arr = np.sort(sorted_arr)
         return sorted_arr.astype(str)
-    
+
     def _calcStateSpectra(self, exc_arr, osc_arr):
 
         y = np.zeros_like(self.wavelength_arr)
@@ -134,7 +146,7 @@ class GetTA():
 
         if self.diabatic:
             diapop = structurGroup['diapop'][:]
-            truth_array = np.where(diapop==1)
+            truth_array = np.where(diapop == 1)
             if len(truth_array) > 0:
                 if truth_array[0] != self.diabatic_state:
                     return np.zeros_like(self.wavelength_arr)
@@ -151,26 +163,28 @@ class GetTA():
                 except KeyError:
                     print('{} @ {}'.format(structurGroup.name, pumpName))
         return y
-    
+
     def _getTrajectorySpectra(self, trajectory):
         mesh = np.zeros((self.time_arr.shape[0], self.wavelength_arr.shape[0]))
-        
+
         for t, time in enumerate(self.time_arr):
-            mesh[t,:] = self._getStructurSpectra(self.hdf5File[time][trajectory])
-            
+            mesh[t, :] = self._getStructurSpectra(
+                self.hdf5File[time][trajectory])
+
         return mesh
-    
+
     def _getAllTrajectories(self):
-        tensor = np.zeros((self.time_arr.shape[0], self.wavelength_arr.shape[0], self.trajectories.shape[0]))
-        
+        tensor = np.zeros(
+            (self.time_arr.shape[0], self.wavelength_arr.shape[0], self.trajectories.shape[0]))
+
         for i, trajectory in enumerate(self.trajectories):
-            tensor[:,:,i] = self._getTrajectorySpectra(trajectory)
-            
+            tensor[:, :, i] = self._getTrajectorySpectra(trajectory)
+
         return tensor
-    
+
     def _getTA(self):
         tensor = self._getAllTrajectories()
-        
+
         return TA(self.time_arr, self.wavelength_arr, self.trajectories, tensor)
 
     # def _getTimeSpectra(self, timeGroup, structurname=None, **kwargs):
@@ -181,7 +195,7 @@ class GetTA():
     #     for structur in timeGroup.keys():
     #         if structurname:
     #             if structur==structurname:
-    #                 y += self._getStructurSpectra(timeGroup[structur])    
+    #                 y += self._getStructurSpectra(timeGroup[structur])
     #         else:
     #             y += self._getStructurSpectra(timeGroup[structur])
 
@@ -221,13 +235,14 @@ if __name__ == "__main__":
     wavelength_arr = np.linspace(280, 290, 100)
 
 #    ta_data = GetTA(hdf5_path, wavelength_arr, time_arr=time_arr).ta
-    dia_data = GetTA(hdf5_path, wavelength_arr, time_arr=time_arr, diabatic_state=0)    
+    dia_data = GetTA(hdf5_path, wavelength_arr,
+                     time_arr=time_arr, diabatic_state=0)
     # for error in [frobeniusDist]:
-        # print('------- {} ------'.format(error.__name__))
-        # for i in [0.1, 0.05, 0.01, 0.008, 0.005]:
-            # ta , mse, num = ta_data.convergence(i, norm=norm_frob,errorfunc=error)
-            # print(mse, num)
-    
+    # print('------- {} ------'.format(error.__name__))
+    # for i in [0.1, 0.05, 0.01, 0.008, 0.005]:
+    # ta , mse, num = ta_data.convergence(i, norm=norm_frob,errorfunc=error)
+    # print(mse, num)
+
     # print(ta_data.tensor.shape)
     # print(ta_data.z)
     # print(ta_data.z)
@@ -235,12 +250,11 @@ if __name__ == "__main__":
     # print(ta_data.y)
 
     # import matplotlib.pyplot as plt
-    
+
     # plt.figure()
-    
+
     # plt.pcolormesh(ta_data.ta)
-    
+
     # plt.savefig('/export/home/tkaczun/scripts/qextract/data/ta_util.plot.png', )
-    
 
     # getMesh(os.getcwd() + '/' + hdf5_path, wavelength_arr, time_arr)

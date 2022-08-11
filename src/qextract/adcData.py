@@ -5,7 +5,7 @@ Author: Tobias Kaczun
 
 import pandas as pd
 
-
+# TODO: test if this has to be updated
 class adcData:
 
     def __init__(self, filename):

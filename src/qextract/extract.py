@@ -102,7 +102,8 @@ class ExtractRem(Extract):
 
         Splits the line along its whitespaces. First split contains
         keywords, last split (should) contain value. If = present it
-        will be contained in the middle split.
+        will be contained in the middle split. Inline comments will 
+        screw up this function.
 
         Parameters
         ----------
@@ -111,25 +112,6 @@ class ExtractRem(Extract):
         """
         line = line.lstrip().rstrip()
         self.data[line.split()[0].upper()] = line.split()[-1]
-
-    def getBASISfromFN(self, filename):
-        """[summary]
-
-        Parameters
-        ----------
-        filename : [type]
-            [description]
-        """
-        basis = filename.split('_')[-1].split('.')[0]
-
-        old_char = ['p', 's']
-        new_char = [r'+', r'*']
-
-        if '631' in filename:
-            for old, new in zip(old_char, new_char):
-                basis = basis.replace(old, new)
-
-        self.data['BASIS'] = basis
 
 
 class ExtractExcitation(Extract):
@@ -370,6 +352,8 @@ class ExtractOther(Extract):
 
 # TODO: Write docstrings
 # TODO: rewrite to staticmethods? or other direct call?
+
+
 class ExtractFile:
     """
 
@@ -416,8 +400,6 @@ class ExtractFile:
         exRem = self.extractREM(outfile)
         exOth = ExtractOther()
 
-        if exRem.data['BASIS'].casefold() == 'gen':
-            exRem. getBASISfromFN(filename)
         if 'FANO'.casefold() in exRem.data['METHOD'].casefold():
             cur_data.setData(['pump', 'probe', 'pump_probe'],
                              self.extractFANO(outfile))
