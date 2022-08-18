@@ -1,0 +1,13 @@
+$comment
+	{traj} at {time}
+$end
+
+$molecule
+	0 1
+	{structur}
+$end
+
+$rem
+	METHOD	{METHOD}
+	BASIS	cc-pVDZ	
+$end
