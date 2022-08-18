@@ -19,7 +19,7 @@ def read_qchem_temp(qchem_template):
     return qin
 
 
-def extract_structur(xyzFile):
+def extract_structur(xyzFile, timesteps=None):
 
     start_struct = False
     structur = ''
@@ -40,15 +40,19 @@ def extract_structur(xyzFile):
                         pass
 
                     start_struct = False
-
-                    yield structur, time
+                    
+                    if timesteps is None:
+                        yield {'structur': structur, 'time': time, 'traj': traj, }
+                    else:
+                        if time in timesteps:
+                            yield {'structur': structur, 'time': time, 'traj': traj}
                     structur = ''
 
             if 'Time' in line:
                 time = float(line.split()[-1])
                 start_struct = True
 
-        yield {'structur': structur, 'time': time, 'traj': traj}
+        yield {'structur': structur, 'time': time, 'traj': traj, }
 
 
 class QChemIn:
@@ -56,7 +60,7 @@ class QChemIn:
     def __init__(self,  qchem_template, extract_data=extract_structur, q_dir=None, qin_options=None, qsub_options=None) -> None:
         self.extract_structur = extract_data
 
-        if os.isfile(qchem_template):
+        if os.path.isfile(qchem_template):
             self.qchem_input = read_qchem_temp(qchem_template)
         else:
             self.qchem_input = qchem_template
@@ -99,20 +103,20 @@ class QChemIn:
             structur = qin_dict.pop('structur')
 
             # FIXME: how to deal with q_dir and user specified paths?
-            if qin_dict['filepath']:
+            try:
                 infile_path = self.q_dir + qin_dict.pop('filepath')
-            else:
+            except KeyError:
                 infile_path = self.q_dir + self.get_infile_path(qin_dict)
 
-            if qin_dict['qin_options']:
+            try:
                 qin_options_extract = qin_dict['qin_options']
-            else:
+            except KeyError:
                 qin_options_extract = {}
 
             os.makedirs(os.path.dirname(infile_path), exist_ok=True)
 
-            with open(infile_path) as infile:
-                infile.write(self.qchem_input(structur=structur,
+            with open(infile_path, 'w') as infile:
+                infile.write(self.qchem_input.format(structur=structur,
                                               **qin_dict, **self.qin_options, **qin_options, **qin_options_extract))
 
             if qchem_send_job:
@@ -131,17 +135,27 @@ class QChemIn:
 
 
 if __name__ == "__main__":
+    # this will be required to set the timesteps to extract for
+    # the extract_structur function
+    from functools import partial
+    import glob
+    
     # usage example and test
     # 1st define paths
     # to the qchem input template
-    qchem_temp = ''
+    #! those paths will not work on other machines!
+    qchem_temp = '/home/tobias/heibox/ta-Qchem/data/ta_send_test/input/qchem_test.template'
     # to the dir in whicht the input files are to be placed in general
-    q_dir = ''
+    q_dir = '/home/tobias/heibox/ta-Qchem/data/ta_send_test/output/'
     # to the files/dirs from whch you want to extract the structur and
     # other stuff for the creation of the qchem input file
-    data_dir = ''
+    data_dir = '/home/tobias/heibox/ta-Qchem/data/ta_send_test/input/'
+    
+    # set timesteps
+    timesteps = np.arange( 0, 204, step=4)
+    extract_func = partial(extract_structur, timesteps=timesteps)
 
-    # define the additional general options you want to include into
+    # define the additional general options you want to include into/home/tobias/heibox/ta-Qchem/data
     # the qchem_template via pythons str.format() function
     # those given here will be applied to all hereby created input
     # files!
@@ -154,13 +168,16 @@ if __name__ == "__main__":
     qsub_options = '--version qchem-5.2'
 
     # create the class instance
-    # if you have written your own extract_structur method give it here
-    qwrite = QChemIn(qchem_temp, qin_options=qin_options,
+    #! if you have written your own extract_structur method give it here
+    #! best implement any preselection of structurs/timesteps whatever
+    #! that are supposed to be used in the extract_data function 
+    qwrite = QChemIn(qchem_temp, extract_data=extract_func, qin_options=qin_options,
                      q_dir=q_dir, qsub_options=qsub_options)
 
     # iterate over the files/dirs you for which you want to create (and send)
     # qchem calculations
 
-    for filepath in data_dir:
+    
+    for filepath in glob.glob('**/*.xyz', root_dir=data_dir,recursive=True):
         #! for actual use set qchem_send_job to True and echo to False
-        qwrite.write_qchem_file(filepath, qchem_send_job=False, echo=True)
+        qwrite.write_qchem_file(data_dir + filepath, qchem_send_job=False, echo=True)
