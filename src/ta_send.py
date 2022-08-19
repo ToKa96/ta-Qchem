@@ -44,7 +44,7 @@ def extract_structur(xyzFile, timesteps=None):
                     if timesteps is None:
                         yield {'structur': structur, 'time': time, 'traj': traj, }
                     else:
-                        if time in timesteps:
+                        if float(time) in timesteps:
                             yield {'structur': structur, 'time': time, 'traj': traj}
                     structur = ''
 
@@ -52,7 +52,11 @@ def extract_structur(xyzFile, timesteps=None):
                 time = float(line.split()[-1])
                 start_struct = True
 
-        yield {'structur': structur, 'time': time, 'traj': traj, }
+        if timesteps is None:
+            yield {'structur': structur, 'time': time, 'traj': traj, }
+        else:
+            if float(time) in timesteps:
+                yield {'structur': structur, 'time': time, 'traj': traj}
 
 
 class QChemIn:
@@ -144,15 +148,15 @@ if __name__ == "__main__":
     # 1st define paths
     # to the qchem input template
     #! those paths will not work on other machines!
-    qchem_temp = '/home/tobias/heibox/ta-Qchem/data/ta_send_test/input/qchem_test.template'
+    qchem_temp = '/export/home/tkaczun/scripts/ta_qchem/data/ta_send_test/input/qchem_test.template'
     # to the dir in whicht the input files are to be placed in general
-    q_dir = '/home/tobias/heibox/ta-Qchem/data/ta_send_test/output/'
+    q_dir = '/export/home/tkaczun/scripts/ta_qchem/data/ta_send_test/output/'
     # to the files/dirs from whch you want to extract the structur and
     # other stuff for the creation of the qchem input file
-    data_dir = '/home/tobias/heibox/ta-Qchem/data/ta_send_test/input/'
+    data_dir = '/export/home/tkaczun/scripts/ta_qchem/data/ta_send_test/input/'
     
     # set timesteps
-    timesteps = np.arange( 0, 204, step=4)
+    timesteps = np.arange( 0.0, 20.0, step=4)
     extract_func = partial(extract_structur, timesteps=timesteps)
 
     # define the additional general options you want to include into/home/tobias/heibox/ta-Qchem/data

@@ -1,0 +1,1286 @@
+Knecht20 192.168.1
+Q-Chem Developer Version! Running on 192.168.1.*
+                  Welcome to Q-Chem
+     A Quantum Leap Into The Future Of Chemistry
+
+
+ Q-Chem 5.0, Q-Chem, Inc., Pleasanton, CA (2017)
+
+ Yihan Shao,  Zhengting Gan,  E. Epifanovsky,  A. T. B. Gilbert,  M. Wormit,  
+ J. Kussmann,  A. W. Lange,  A. Behn,  Jia Deng,  Xintian Feng,  D. Ghosh,  
+ M. Goldey,  P. R. Horn,  L. D. Jacobson,  I. Kaliman,  T. Kus,  A. Landau,  
+ Jie Liu,  E. I. Proynov,  R. M. Richard,  R. P. Steele,  E. J. Sundstrom,  
+ H. L. Woodcock III,  P. M. Zimmerman,  D. Zuev,  B. Albrecht,  E. Alguire,  
+ S. A. Baeppler,  Z. Benda,  Y. A. Bernard,  E. J. Berquist,  K. B. Bravaya,  
+ D. Casanova,  Chun-Min Chang,  Yunqing Chen,  A. Chien,  K. D. Closser,  
+ M. P. Coons,  S. Dasgupta,  M. Diedenhofen,  Hainam Do,  R. G. Edgar,  
+ Po-Tung Fang,  S. Fatehi,  Qingguo Feng,  Qinghui Ge,  A. Ghysels,  
+ J. Gomes,  J. Gonthier,  A. Gunina,  M. W. D. Hanson-Heine,  
+ P. H. P. Harbach,  A. W. Hauser,  J. E. Herr,  E. G. Hohenstein,  
+ Z. C. Holden,  Kerwin Hui,  T.-C. Jagau,  Hyunjun Ji,  B. Kaduk,  
+ K. Khistyaev,  Jaehoon Kim,  P. Klunzinger,  K. Koh,  D. Kosenkov,  
+ T. Kowalczyk,  C. M. Krauter,  A. Kunitsa,  Ka Un Lao,  A. Laurent,  
+ K. V. Lawler,  Joonho Lee,  D. Lefrancois,  S. Lehtola,  D. S. Levine,  
+ Yi-Pei Li,  You-Sheng Lin,  Fenglai Liu,  E. Livshits,  A. Luenser,  
+ P. Manohar,  E. Mansoor,  S. F. Manzer,  Shan-Ping Mao,  Yuezhi Mao,  
+ N. Mardirossian,  A. V. Marenich,  L. A. Martinez-Martinez,  S. A. Maurer,  
+ N. J. Mayhall,  S. C. McKenzie,  J.-M. Mewes,  A. F. Morrison,  K. Nanda,  
+ T. S. Nguyen-Beck,  R. Olivares-Amaya,  J. A. Parkhill,  T. M. Perrine,  
+ F. Plasser,  S. Prager,  A. Prociuk,  D. R. Rehn,  F. Rob,  M. Schneider,  
+ N. Sergueev,  S. M. Sharada,  S. Sharma,  D. W. Small,  T. Stauch,  
+ T. Stein,  Yu-Chuan Su,  A. J. W. Thom,  T. Tsuchimochi,  L. Vogt,  
+ O. Vydrov,  M. A. Watson,  J. Wenzel,  M. de Wergifosse,  T. A. Wesolowski,  
+ A. White,  J. Witte,  A. Yamada,  Jun Yang,  K. Yao,  S. Yeganeh,  
+ S. R. Yost,  Zhi-Qiang You,  A. Zech,  Igor Ying Zhang,  Xing Zhang,  
+ Yan Zhao,  Ying Zhu,  B. R. Brooks,  G. K. L. Chan,  C. J. Cramer,  
+ M. S. Gordon,  W. J. Hehre,  A. Klamt,  M. W. Schmidt,  C. D. Sherrill,  
+ D. G. Truhlar,  A. Aspuru-Guzik,  R. Baer,  A. T. Bell,  N. A. Besley,  
+ Jeng-Da Chai,  A. Dreuw,  B. D. Dunietz,  T. R. Furlani,  Chao-Ping Hsu,  
+ Yousung Jung,  Jing Kong,  D. S. Lambrecht,  WanZhen Liang,  C. Ochsenfeld,  
+ V. A. Rassolov,  L. V. Slipchenko,  J. E. Subotnik,  T. Van Voorhis,  
+ J. M. Herbert,  A. I. Krylov,  P. M. W. Gill,  M. Head-Gordon
+
+ Contributors to earlier versions of Q-Chem not listed above: 
+ R. D. Adamson,  B. Austin,  J. Baker,  G. J. O. Beran,  K. Brandhorst,  
+ S. T. Brown,  E. F. C. Byrd,  A. K. Chakraborty,  C.-L. Cheng,  
+ Siu Hung Chien,  D. M. Chipman,  D. L. Crittenden,  H. Dachsel,  
+ R. A. DiStasio Jr.,  R. J. Doerksen,  A. D. Dutoi,  L. Fusti-Molnar,  
+ W. A. Goddard III,  A. Golubeva-Zadorozhnaya,  S. R. Gwaltney,  G. Hawkins,  
+ A. Heyden,  S. Hirata,  G. Kedziora,  F. J. Keil,  C. Kelley,  Jihan Kim,  
+ R. A. King,  R. Z. Khaliullin,  P. P. Korambath,  W. Kurlancheek,  
+ A. M. Lee,  M. S. Lee,  S. V. Levchenko,  Ching Yeh Lin,  D. Liotard,  
+ R. C. Lochan,  I. Lotan,  P. E. Maslen,  N. Nair,  D. P. O'Neill,  
+ D. Neuhauser,  E. Neuscamman,  C. M. Oana,  R. Olson,  B. Peters,  
+ R. Peverati,  P. A. Pieniazek,  Y. M. Rhee,  J. Ritchie,  M. A. Rohrdanz,  
+ E. Rosta,  N. J. Russ,  H. F. Schaefer III,  N. E. Schultz,  N. Shenvi,  
+ A. C. Simmonett,  A. Sodt,  D. Stuck,  K. S. Thanthiriwatte,  V. Vanovschi,  
+ Tao Wang,  A. Warshel,  C. F. Williams,  Q. Wu,  X. Xu,  W. Zhang
+
+ Please cite Q-Chem as follows:
+ Y. Shao et al., Mol. Phys. 113, 184-215 (2015)
+ DOI: 10.1080/00268976.2014.952696
+
+ Q-Chem 5.0.1 for Intel X86 EM64T Linux
+
+ Parts of Q-Chem use Armadillo 5.200.1 (Boston Tea Smuggler).
+ http://arma.sourceforge.net/
+
+ Q-Chem begins on Tue Dec 28 09:35:55 2021  
+
+Host: 
+0
+
+     Scratch files written to /lscratch/tkaczun/transient_absorption/Trajectories_10/4.0/TRAJ1_398953.Meister/qchem21495//
+ 
+>>> fanoman::qchem_input_parser: Checking options in input section $fano_pump
+ ------------------------------------------------------------
+ 
+>>> fanoman::qchem_input_parser: Checking options in input section $fano_probe
+ ------------------------------------------------------------
+
+Checking the input file for inconsistencies... 	...done.
+
+--------------------------------------------------------------
+User input:
+--------------------------------------------------------------
+$comment
+time = 4.0
+$end
+
+$molecule
+0 1
+c       -1.13638        0.69987       -0.00875
+c       -1.17677       -0.69273       -0.00201
+n        0.01392       -1.44859       -0.03158
+c        1.15206       -0.71159        0.05227
+c        1.15257        0.74487       -0.03344
+n        0.00308        1.42736        0.02202
+h       -2.06557        1.38165       -0.03951
+h       -2.07431       -1.48605        0.15604
+h        1.90056       -1.45750       -0.01975
+h        2.10460        1.37527       -0.06023
+$end
+
+$rem
+	JOBTYPE         SP
+	METHOD          FANO
+	basis cc-pCVDZ
+	cc_symmetry FALSE
+    SYM_TOL		4
+	mem_total 50000
+	threads 1
+	!QSYS wt=12:00:00
+	!QSYS mem=60.0gb
+	!QSYS vmem=60.0gb
+	!ADC_PRINT       6
+	!FANO_PRINT      3
+$end
+
+$fano_pump
+	METHOD                   ADC(2)
+	EE_SINGLETS              7 
+	ADC_DAVIDSON_MAXITER     150
+$end
+
+$fano_probe
+	METHOD                   CVS-ADC(2)-x
+	CC_REST_OCC              6
+	EE_SINGLETS              10
+	ADC_DAVIDSON_MAXITER     150
+$end
+--------------------------------------------------------------
+ ----------------------------------------------------------------
+             Standard Nuclear Orientation (Angstroms)
+    I     Atom           X                Y                Z
+ ----------------------------------------------------------------
+    1      C       0.0316326678    -1.3340235941     0.0110805180
+    2      C      -1.1900975034    -0.6644072610     0.0101345747
+    3      N      -1.2396284243     0.7451045084     0.0377870682
+    4      C      -0.0286307299     1.3539236912    -0.0537895060
+    5      C       1.2284538954     0.6177248663     0.0260336157
+    6      N       1.2353917694    -0.7191723216    -0.0273840466
+    7      H       0.1498793982    -2.4803940897     0.0429646760
+    8      H      -2.3293231354    -1.0375685967    -0.1409615989
+    9      H      -0.2930231146     2.3770301618     0.0181179022
+   10      H       2.2539734562     1.1201010019     0.0463026552
+ ----------------------------------------------------------------
+ Molecular Point Group                 C1    NOp =  1
+ Largest Abelian Subgroup              C1    NOp =  1
+ Nuclear Repulsion Energy =   204.0500895947 hartrees
+ There are       21 alpha and       21 beta electrons
+ Requested basis set is cc-pCVDZ
+ There are 60 shells and 128 basis functions
+
+ Total QAlloc Memory Limit  50000 MB
+ Mega-Array Size        61 MB
+ MEM_STATIC part        62 MB
+
+                       Distance Matrix (Angstroms)
+             C (  1)   C (  2)   N (  3)   C (  4)   C (  5)   N (  6)
+   C (  2)  1.393202
+   N (  3)  2.437128  1.410653
+   C (  4)  2.689405  2.329539  1.358515
+   C (  5)  2.289525  2.737427  2.471395  1.458980
+   N (  6)  1.352242  2.426398  2.876470  2.428205  1.337982
+   H (  7)  1.152894  2.257083  3.512065  3.839690  3.280541  2.070070
+   H (  8)  2.384348  1.208269  2.096976  3.319642  3.927552  3.580708
+   H (  9)  3.725234  3.170985  1.886698  1.059160  2.325964  3.453200
+   H ( 10)  3.311007  3.879098  3.513680  2.296731  1.142140  2.103774
+             H (  7)   H (  8)   H (  9)
+   H (  8)  2.874373
+   H (  9)  4.877638  3.978858
+   H ( 10)  4.170226  5.069242  2.840397
+ 
+ A cutoff of  1.0D-11 yielded   1767 shell pairs
+ There are      8061 function pairs (      8880 Cartesian)
+ Smallest overlap matrix eigenvalue = 1.89E-03
+
+ Scale SEOQF with 1.000000e-01/1.000000e-01/1.000000e+00
+
+ Standard Electronic Orientation quadrupole field applied
+ Nucleus-field energy     =     0.0000000052 hartrees
+ Guess from superposition of atomic densities
+ Warning:  Energy on first SCF cycle will be non-variational
+ SAD guess density has 42.000000 electrons
+ A restricted Hartree-Fock SCF calculation will be
+ performed using Pulay DIIS extrapolation
+ SCF converges when DIIS error is below 1.0E-08
+ ---------------------------------------
+  Cycle       Energy         DIIS Error
+ ---------------------------------------
+    1    -264.4359717781      6.38E-02
+    2    -262.5795651459      5.18E-03
+    3    -262.6441540151      2.32E-03
+    4    -262.6542245740      9.02E-04
+    5    -262.6563312992      1.92E-04
+    6    -262.6564569507      7.17E-05
+    7    -262.6564841289      3.38E-05
+    8    -262.6564899791      1.42E-05
+    9    -262.6564910156      3.48E-06
+   10    -262.6564911383      1.51E-06
+   11    -262.6564911619      9.54E-07
+   12    -262.6564911715      2.86E-07
+   13    -262.6564911725      1.40E-07
+   14    -262.6564911727      2.95E-08
+   15    -262.6564911730      1.28E-08
+   16    -262.6564911722      6.39E-09 Convergence criterion met
+ ---------------------------------------
+ SCF time:  CPU 12.96 s  wall 12.97 s
+ SCF   energy in the final basis set = -262.65649117
+ Total energy in the final basis set = -262.65649117
+--------------------------------------------------------------------------------
+ >>> This is fanoman. <<<
+--------------------------------------------------------------------------------
+********************************************************************************
+ FANOMAN: Performing probe state ADC calculation.
+********************************************************************************
+================================================================================
+|                                                                              |
+|                                 A D C  M A N                                 |
+|                                                                              |
+ ------------------------------------------------------------------------------ 
+|                                                                              |
+| Components:                                                                  |
+|                                                                              |
+| - libvmm - 1.3-trunk                                                         |
+|   Authors:                                                                   |
+|   Evgeny Epifanovsky, Ilya Kaliman                                           |
+|                                                                              |
+| - libtensor - 2.5-trunk                                                      |
+|   Authors:                                                                   |
+|   Evgeny Epifanovsky, Michael Wormit, Dmitry Zuev, Sam Manzer,               |
+|   Ilya Kaliman                                                               |
+|                                                                              |
+| - libwfa - 1.1-beta                                                          |
+|   Authors:                                                                   |
+|   Felix Plasser, Stefanie Baeppler, Benjamin Thomitzni, Michael Wormit       |
+|                                                                              |
+| - libadc - 1.0-beta                                                          |
+|   Authors:                                                                   |
+|   Michael Wormit, Philipp H. P. Harbach, Caroline Krauter, Dirk Rehn,        |
+|   Matthias Schneider, Jan Wenzel                                             |
+|                                                                              |
+| - adcman - 2.5-core_valence                                                  |
+|   Authors:                                                                   |
+|   Michael Wormit, Philipp H. P. Harbach, Caroline Krauter, Dirk Rehn,        |
+|   Jan Wenzel, Jan-Michael Mewes, Daniel Lefrancois, Andreas Dreuw            |
+|                                                                              |
+| Authors of earlier versions of ADCMAN:                                       |
+| Andreas Dreuw, Jan Hendrik Starcke, Dirk Rehn, Michael Wormit                |
+|                                                                              |
+================================================================================
+
+
+--------------------------------------------------------------------------------
+                                   HF Summary                                   
+--------------------------------------------------------------------------------
+  Energy:                                                 -262.6564911722 a.u.
+  Dip. moment [a.u.]:                  [  -0.041005,   -0.086728,    0.018240]
+  Total dipole [Debye]:                                         0.248206576777
+  <r^2> [a.u.]:                        [ 204.274565,  195.437113,   27.821320]
+  Total <r^2> [a.u.]:                                         427.532998045725
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+                                 MP(2) Summary                                  
+--------------------------------------------------------------------------------
+  MP energy contribution:                                   -1.0734319203 a.u.
+  Total energy:                                           -263.7299230925 a.u.
+  Dip. moment [a.u.]:                  [  -0.017313,   -0.050692,    0.016091]
+  Total dipole [Debye]:                                         0.142164355261
+  <r^2> [a.u.]:                        [ 204.007141,  195.532728,   27.324613]
+  Total <r^2> [a.u.]:                                         426.864481793715
+--------------------------------------------------------------------------------
+  Starting Davidson ... 
+--------------------------------------------------------------------------------
+   It NVec Conv  Avg. Norm  Max. Norm  Conv. states           Remark
+--------------------------------------------------------------------------------
+        10    0  3.491e-01  1.145e+00 11.0740 n n n n n n n n Guess.
+    1   20    0  2.052e-01  1.073e+00 10.6410 n n n n n n n n 
+    2   30    0  8.112e-02  5.356e-01 10.5458 n n n n n n n n 
+    3   40    0  2.652e-02  2.000e-01 10.5348 n n n n n n n n 
+    4   50    0  1.629e-02  1.100e-01 10.5329 n n n n n n n n 
+    5   20    0  8.263e-03  5.841e-02 10.5324 n n n n n n n n Subspace collapsed.
+    6   30    0  1.291e-02  9.726e-02 10.5320 n n n n n n n n 
+    7   40    0  1.003e-02  8.227e-02 10.5318 n n n n n n n n 
+    8   50    0  6.464e-03  5.901e-02 10.5318 n n n n n n n n 
+    9   20    0  3.893e-03  3.440e-02 10.5318 n n n n n n n n Subspace collapsed.
+   10   30    0  3.358e-03  2.942e-02 10.5318 n n n n n n n n 
+   11   40    0  2.579e-03  2.352e-02 10.5318 n n n n n n n n 
+   12   50    0  2.704e-03  2.414e-02 10.5318 n n n n n n n n 
+   13   20    0  1.574e-03  1.441e-02 10.5318 n n n n n n n n Subspace collapsed.
+   14   30    0  1.541e-03  1.368e-02 10.5318 n n n n n n n n 
+   15   40    0  1.236e-03  1.124e-02 10.5318 n n n n n n n n 
+   16   50    0  1.357e-03  1.265e-02 10.5318 n n n n n n n n 
+   17   20    0  7.981e-04  7.343e-03 10.5318 n n n n n n n n Subspace collapsed.
+   18   30    0  7.334e-04  6.774e-03 10.5318 n n n n n n n n 
+   19   40    0  5.515e-04  5.190e-03 10.5318 n n n n n n n n 
+   20   50    0  6.530e-04  6.112e-03 10.5318 n n n n n n n n 
+   21   20    0  4.004e-04  3.790e-03 10.5318 n n n n n n n n Subspace collapsed.
+   22   30    0  3.816e-04  3.589e-03 10.5318 n n n n n n n n 
+   23   40    0  2.991e-04  2.839e-03 10.5318 n n n n n n n n 
+   24   50    0  3.485e-04  3.342e-03 10.5318 n n n n n n n n 
+   25   20    5  2.089e-04  1.996e-03 10.5318 y y n y y n y n Subspace collapsed.
+   26   30    5  1.933e-04  1.853e-03 10.5318 y y n y y n y n 
+   27   40    6  1.512e-04  1.461e-03 10.5318 y y y y y n y n 
+   28   50    6  1.739e-04  1.679e-03 10.5318 y y y y y n y n 
+   29   20    6  1.122e-04  1.088e-03 10.5318 y y y y y n y n Subspace collapsed.
+   30   30    7  1.018e-04  9.859e-04 10.5318 y y y y y y y n 
+   31   40    8  8.153e-05  7.930e-04 10.5318 y y y y y y y y 
+   32   50    8  9.747e-05  9.521e-04 10.5318 y y y y y y y y 
+   33   20    8  5.801e-05  5.661e-04 10.5318 y y y y y y y y Subspace collapsed.
+   34   30    8  5.181e-05  5.063e-04 10.5318 y y y y y y y y 
+   35   40    8  4.135e-05  4.056e-04 10.5318 y y y y y y y y 
+   36   50    8  5.063e-05  4.971e-04 10.5318 y y y y y y y y 
+   37   20    8  3.103e-05  3.050e-04 10.5318 y y y y y y y y Subspace collapsed.
+   38   30    8  2.724e-05  2.677e-04 10.5318 y y y y y y y y 
+   39   40    8  2.253e-05  2.219e-04 10.5318 y y y y y y y y 
+   40   50    8  2.917e-05  2.880e-04 10.5318 y y y y y y y y 
+   41   20    8  1.592e-05  1.571e-04 10.5318 y y y y y y y y Subspace collapsed.
+   42   30    8  1.432e-05  1.414e-04 10.5318 y y y y y y y y 
+   43   40    8  1.153e-05  1.140e-04 10.5318 y y y y y y y y 
+   44   50    8  1.521e-05  1.506e-04 10.5318 y y y y y y y y 
+   45   20    8  8.429e-06  8.349e-05 10.5318 y y y y y y y y Subspace collapsed.
+   46   30    8  8.165e-06  8.091e-05 10.5318 y y y y y y y y 
+   47   40    8  6.656e-06  6.605e-05 10.5318 y y y y y y y y 
+   48   50    8  8.882e-06  8.823e-05 10.5318 y y y y y y y y 
+   49   20    8  4.920e-06  4.887e-05 10.5318 y y y y y y y y Subspace collapsed.
+   50   30    8  4.561e-06  4.531e-05 10.5318 y y y y y y y y 
+   51   40    8  3.471e-06  3.450e-05 10.5318 y y y y y y y y 
+   52   50    8  5.200e-06  5.175e-05 10.5318 y y y y y y y y 
+   53   20    8  2.603e-06  2.590e-05 10.5318 y y y y y y y y Subspace collapsed.
+   54   29    8  2.766e-06  2.754e-05 10.5318 y y y y y y y y 
+   55   31    8  2.599e-06  2.586e-05 10.5318 y y y y y y y y 
+   56   33    8  2.744e-06  2.732e-05 10.5318 y y y y y y y y 
+   57   35    8  3.554e-06  3.544e-05 10.5318 y y y y y y y y 
+   58   36    8  3.536e-06  3.527e-05 10.5318 y y y y y y y y 
+   59   43    8  2.439e-06  2.432e-05 10.5318 y y y y y y y y 
+   60   43    8  2.439e-06  2.432e-05 10.5318 y y y y y y y y 
+   61   50    8  2.594e-06  2.585e-05 10.5318 y y y y y y y y 
+   62   14    8  1.481e-06  1.477e-05 10.5318 y y y y y y y y Subspace collapsed.
+   63   18    8  1.330e-06  1.326e-05 10.5318 y y y y y y y y 
+   64   22    9  9.792e-07  9.752e-06 10.5318 y y y y y y y y 
+   65   26    9  1.179e-06  1.175e-05 10.5318 y y y y y y y y 
+   66   30    9  1.237e-06  1.235e-05 10.5318 y y y y y y y y 
+   67   34    9  5.218e-07  5.208e-06 10.5318 y y y y y y y y 
+   68   37    9  3.471e-07  3.467e-06 10.5318 y y y y y y y y 
+   69   39    9  2.537e-07  2.533e-06 10.5318 y y y y y y y y 
+   70   41    9  1.749e-07  1.748e-06 10.5318 y y y y y y y y 
+   71   43    9  1.669e-07  1.668e-06 10.5318 y y y y y y y y 
+   72   45    9  1.771e-07  1.769e-06 10.5318 y y y y y y y y 
+   73   47    9  1.885e-07  1.884e-06 10.5318 y y y y y y y y 
+   74   49    9  1.665e-07  1.664e-06 10.5318 y y y y y y y y 
+   75   50    9  1.548e-07  1.547e-06 10.5318 y y y y y y y y 
+   76   12   10  8.385e-08  8.382e-07 10.5318 y y y y y y y y Converged.
+--------------------------------------------------------------------------------
+  Davidson Summary: 
+ ------------------------------------------------------------
+  State  0: excitation energy =  10.5318 a.u.   (converged)
+  State  1: excitation energy =  10.5417 a.u.   (converged)
+  State  2: excitation energy =  10.5440 a.u.   (converged)
+  State  3: excitation energy =  10.5518 a.u.   (converged)
+  State  4: excitation energy =  10.5666 a.u.   (converged)
+  State  5: excitation energy =  10.5683 a.u.   (converged)
+  State  6: excitation energy =  10.5736 a.u.   (converged)
+  State  7: excitation energy =  10.5853 a.u.   (converged)
+  State  8: excitation energy =  10.6675 a.u.   (converged)
+  State  9: excitation energy =  10.6814 a.u.   (converged)
+ ------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+                             Excited State Summary
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+  Excited state 1 (singlet, A)                                     [converged]
+  ----------------------------------------------------------------------------
+  Term symbol:  2 (1) A                                     R^2 =  8.33127e-14
+
+  Total energy:                                           -253.1981144265 a.u.
+  Excitation energy:                                             286.585089 eV
+
+  Osc. strength:                                                0.029828522784
+  Trans. dip. moment [a.u.]:           [  -0.000972,    0.000243,    0.065172]
+  <i|r^2|0> [a.u.]:                    [  -0.000218,    0.000025,   -0.015660]
+
+
+  V1^2 = 0.7505, V2^2 = 0.2495
+
+  Important amplitudes:
+     core i     occ j       vir a       vir b          v   
+    --------------------------------------------------------
+     6 (A) A               22 (A) A                 -0.4695
+     6 (A) A               23 (A) A                  0.3556
+    --------------------------------------------------------
+  ----------------------------------------------------------------------------
+
+
+  Excited state 2 (singlet, A)                                     [converged]
+  ----------------------------------------------------------------------------
+  Term symbol:  3 (1) A                                     R^2 =  3.33904e-13
+
+  Total energy:                                           -253.1882724352 a.u.
+  Excitation energy:                                             286.852903 eV
+
+  Osc. strength:                                                0.030801349660
+  Trans. dip. moment [a.u.]:           [  -0.005916,   -0.003080,    0.065866]
+  <i|r^2|0> [a.u.]:                    [   0.027811,    0.008804,    0.003361]
+
+
+  V1^2 = 0.7457, V2^2 = 0.2543
+
+  Important amplitudes:
+     core i     occ j       vir a       vir b          v   
+    --------------------------------------------------------
+     4 (A) A               22 (A) A                 -0.5113
+     4 (A) A               23 (A) A                 -0.2804
+    --------------------------------------------------------
+  ----------------------------------------------------------------------------
+
+
+  Excited state 3 (singlet, A)                                     [converged]
+  ----------------------------------------------------------------------------
+  Term symbol:  4 (1) A                                     R^2 =  2.75514e-13
+
+  Total energy:                                           -253.1859087134 a.u.
+  Excitation energy:                                             286.917223 eV
+
+  Osc. strength:                                                0.037086899181
+  Trans. dip. moment [a.u.]:           [   0.003779,    0.000001,   -0.072538]
+  <i|r^2|0> [a.u.]:                    [   0.016736,   -0.000812,   -0.007048]
+
+
+  V1^2 = 0.7504, V2^2 = 0.2496
+
+  Important amplitudes:
+     core i     occ j       vir a       vir b          v   
+    --------------------------------------------------------
+     3 (A) A               22 (A) A                  0.5294
+     3 (A) A               23 (A) A                  0.2567
+    --------------------------------------------------------
+  ----------------------------------------------------------------------------
+
+
+  Excited state 4 (singlet, A)                                     [converged]
+  ----------------------------------------------------------------------------
+  Term symbol:  5 (1) A                                     R^2 =  3.89026e-13
+
+  Total energy:                                           -253.1781687876 a.u.
+  Excitation energy:                                             287.127837 eV
+
+  Osc. strength:                                                0.037177568948
+  Trans. dip. moment [a.u.]:           [   0.001273,   -0.002288,   -0.072651]
+  <i|r^2|0> [a.u.]:                    [  -0.001144,    0.011813,   -0.003277]
+
+
+  V1^2 = 0.7527, V2^2 = 0.2473
+
+  Important amplitudes:
+     core i     occ j       vir a       vir b          v   
+    --------------------------------------------------------
+     5 (A) A               23 (A) A                 -0.4357
+     5 (A) A               22 (A) A                  0.3913
+    --------------------------------------------------------
+  ----------------------------------------------------------------------------
+
+
+  Excited state 5 (singlet, A)                                     [converged]
+  ----------------------------------------------------------------------------
+  Term symbol:  6 (1) A                                     R^2 =  6.31856e-13
+
+  Total energy:                                           -253.1632895761 a.u.
+  Excitation energy:                                             287.532721 eV
+
+  Osc. strength:                                                0.005831164003
+  Trans. dip. moment [a.u.]:           [   0.001197,    0.003238,    0.028563]
+  <i|r^2|0> [a.u.]:                    [   0.000156,   -0.015532,    0.001744]
+
+
+  V1^2 = 0.7201, V2^2 = 0.2799
+
+  Important amplitudes:
+     core i     occ j       vir a       vir b          v   
+    --------------------------------------------------------
+     5 (A) A               22 (A) A                  0.4405
+     5 (A) A               23 (A) A                  0.3914
+    --------------------------------------------------------
+  ----------------------------------------------------------------------------
+
+
+  Excited state 6 (singlet, A)                                     [converged]
+  ----------------------------------------------------------------------------
+  Term symbol:  7 (1) A                                     R^2 =  7.40230e-13
+
+  Total energy:                                           -253.1615934805 a.u.
+  Excitation energy:                                             287.578874 eV
+
+  Osc. strength:                                                0.009487598093
+  Trans. dip. moment [a.u.]:           [   0.005386,    0.000648,    0.036293]
+  <i|r^2|0> [a.u.]:                    [  -0.000660,    0.003060,   -0.008537]
+
+
+  V1^2 = 0.7176, V2^2 = 0.2824
+
+  Important amplitudes:
+     core i     occ j       vir a       vir b          v   
+    --------------------------------------------------------
+     6 (A) A               23 (A) A                  0.4675
+     6 (A) A               22 (A) A                  0.3604
+    --------------------------------------------------------
+  ----------------------------------------------------------------------------
+
+
+  Excited state 7 (singlet, A)                                     [converged]
+  ----------------------------------------------------------------------------
+  Term symbol:  8 (1) A                                     R^2 =  9.75779e-13
+
+  Total energy:                                           -253.1563427882 a.u.
+  Excitation energy:                                             287.721753 eV
+
+  Osc. strength:                                                0.005562598693
+  Trans. dip. moment [a.u.]:           [  -0.003751,   -0.004234,    0.027516]
+  <i|r^2|0> [a.u.]:                    [   0.017114,    0.011205,    0.001544]
+
+
+  V1^2 = 0.7142, V2^2 = 0.2858
+
+  Important amplitudes:
+     core i     occ j       vir a       vir b          v   
+    --------------------------------------------------------
+     4 (A) A               23 (A) A                 -0.5159
+     4 (A) A               22 (A) A                  0.2852
+    --------------------------------------------------------
+  ----------------------------------------------------------------------------
+
+
+  Excited state 8 (singlet, A)                                     [converged]
+  ----------------------------------------------------------------------------
+  Term symbol:  9 (1) A                                     R^2 =  4.69708e-13
+
+  Total energy:                                           -253.1446677149 a.u.
+  Excitation energy:                                             288.039448 eV
+
+  Osc. strength:                                                0.006913859024
+  Trans. dip. moment [a.u.]:           [   0.002581,   -0.005000,    0.030791]
+  <i|r^2|0> [a.u.]:                    [   0.011743,   -0.012408,    0.002963]
+
+
+  V1^2 = 0.7123, V2^2 = 0.2877
+
+  Important amplitudes:
+     core i     occ j       vir a       vir b          v   
+    --------------------------------------------------------
+     3 (A) A               23 (A) A                 -0.5285
+     3 (A) A               22 (A) A                  0.2626
+    --------------------------------------------------------
+  ----------------------------------------------------------------------------
+
+
+  Excited state 9 (singlet, A)                                     [converged]
+  ----------------------------------------------------------------------------
+  Term symbol:  10 (1) A                                    R^2 =  2.01507e-08
+
+  Total energy:                                           -253.0624598678 a.u.
+  Excitation energy:                                             290.276437 eV
+
+  Osc. strength:                                                0.023205518387
+  Trans. dip. moment [a.u.]:           [   0.049032,    0.028421,    0.007152]
+  <i|r^2|0> [a.u.]:                    [  -0.221568,   -0.075354,   -0.011025]
+
+
+  V1^2 = 0.7652, V2^2 = 0.2348
+
+  Important amplitudes:
+     core i     occ j       vir a       vir b          v   
+    --------------------------------------------------------
+     4 (A) A               24 (A) A                  0.4945
+     4 (A) A               25 (A) A                 -0.2743
+    --------------------------------------------------------
+  ----------------------------------------------------------------------------
+
+
+  Excited state 10 (singlet, A)                                     [converged]
+  ----------------------------------------------------------------------------
+  Term symbol:  11 (1) A                                    R^2 =  8.38235e-07
+
+  Total energy:                                           -253.0485235573 a.u.
+  Excitation energy:                                             290.655663 eV
+
+  Osc. strength:                                                0.022541388153
+  Trans. dip. moment [a.u.]:           [  -0.000661,    0.056259,    0.000148]
+  <i|r^2|0> [a.u.]:                    [  -0.019177,   -0.279425,   -0.009180]
+
+
+  V1^2 = 0.7628, V2^2 = 0.2372
+
+  Important amplitudes:
+     core i     occ j       vir a       vir b          v   
+    --------------------------------------------------------
+     5 (A) A               24 (A) A                  0.4941
+     5 (A) A               26 (A) A                  0.2678
+    --------------------------------------------------------
+  ----------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+  Time of ADC calculation:  CPU 7651.10 s  wall 7656.41 s
+================================================================================
+********************************************************************************
+ FANOMAN: Finished probe state ADC calculation.
+********************************************************************************
+********************************************************************************
+ FANOMAN: Performing pump state ADC calculation.
+********************************************************************************
+================================================================================
+|                                                                              |
+|                                 A D C  M A N                                 |
+|                                                                              |
+ ------------------------------------------------------------------------------ 
+|                                                                              |
+| Components:                                                                  |
+|                                                                              |
+| - libvmm - 1.3-trunk                                                         |
+|   Authors:                                                                   |
+|   Evgeny Epifanovsky, Ilya Kaliman                                           |
+|                                                                              |
+| - libtensor - 2.5-trunk                                                      |
+|   Authors:                                                                   |
+|   Evgeny Epifanovsky, Michael Wormit, Dmitry Zuev, Sam Manzer,               |
+|   Ilya Kaliman                                                               |
+|                                                                              |
+| - libwfa - 1.1-beta                                                          |
+|   Authors:                                                                   |
+|   Felix Plasser, Stefanie Baeppler, Benjamin Thomitzni, Michael Wormit       |
+|                                                                              |
+| - libadc - 1.0-beta                                                          |
+|   Authors:                                                                   |
+|   Michael Wormit, Philipp H. P. Harbach, Caroline Krauter, Dirk Rehn,        |
+|   Matthias Schneider, Jan Wenzel                                             |
+|                                                                              |
+| - adcman - 2.5-core_valence                                                  |
+|   Authors:                                                                   |
+|   Michael Wormit, Philipp H. P. Harbach, Caroline Krauter, Dirk Rehn,        |
+|   Jan Wenzel, Jan-Michael Mewes, Daniel Lefrancois, Andreas Dreuw            |
+|                                                                              |
+| Authors of earlier versions of ADCMAN:                                       |
+| Andreas Dreuw, Jan Hendrik Starcke, Dirk Rehn, Michael Wormit                |
+|                                                                              |
+================================================================================
+
+
+--------------------------------------------------------------------------------
+                                   HF Summary                                   
+--------------------------------------------------------------------------------
+  Energy:                                                 -262.6564911722 a.u.
+  Dip. moment [a.u.]:                  [  -0.041005,   -0.086728,    0.018240]
+  Total dipole [Debye]:                                         0.248206576777
+  <r^2> [a.u.]:                        [ 204.274565,  195.437113,   27.821320]
+  Total <r^2> [a.u.]:                                         427.532998045725
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+                                 MP(2) Summary                                  
+--------------------------------------------------------------------------------
+  MP energy contribution:                                   -1.0734319203 a.u.
+  Total energy:                                           -263.7299230925 a.u.
+  Dip. moment [a.u.]:                  [  -0.017313,   -0.050692,    0.016091]
+  Total dipole [Debye]:                                         0.142164355261
+  <r^2> [a.u.]:                        [ 204.007141,  195.532728,   27.324613]
+  Total <r^2> [a.u.]:                                         426.864481793715
+--------------------------------------------------------------------------------
+  Starting Davidson ... 
+--------------------------------------------------------------------------------
+   It NVec Conv  Avg. Norm  Max. Norm  Conv. states           Remark
+--------------------------------------------------------------------------------
+         7    0  2.459e-01  7.049e-01  0.3507 n n n n n n n   Guess.
+    1   14    0  9.718e-02  4.472e-01  0.1765 n n n n n n n   
+    2   21    0  2.585e-02  1.129e-01  0.1618 n n n n n n n   
+    3   28    0  1.157e-02  4.557e-02  0.1603 n n n n n n n   
+    4   35    0  7.990e-03  4.111e-02  0.1600 n n n n n n n   
+    5   14    0  4.785e-03  2.336e-02  0.1599 n n n n n n n   Subspace collapsed.
+    6   21    0  1.033e-02  5.366e-02  0.1599 n n n n n n n   
+    7   28    0  2.113e-02  1.317e-01  0.1599 n n n n n n n   
+    8   35    0  1.983e-02  1.294e-01  0.1599 n n n n n n n   
+    9   14    0  1.357e-02  8.246e-02  0.1599 n n n n n n n   Subspace collapsed.
+   10   21    0  1.138e-02  6.921e-02  0.1599 n n n n n n n   
+   11   28    0  7.592e-03  4.659e-02  0.1599 n n n n n n n   
+   12   35    0  4.917e-03  2.990e-02  0.1599 n n n n n n n   
+   13   14    0  3.257e-03  1.883e-02  0.1599 n n n n n n n   Subspace collapsed.
+   14   21    0  2.962e-03  1.662e-02  0.1599 n n n n n n n   
+   15   28    0  2.122e-03  1.167e-02  0.1599 n n n n n n n   
+   16   35    0  2.079e-03  1.298e-02  0.1599 n n n n n n n   
+   17   14    0  1.144e-03  7.003e-03  0.1599 n n n n n n n   Subspace collapsed.
+   18   21    0  1.044e-03  6.650e-03  0.1599 n n n n n n n   
+   19   28    3  8.457e-04  5.653e-03  0.1599 y y y n n n n   
+   20   35    3  8.153e-04  5.553e-03  0.1599 y y y n n n n   
+   21   14    3  5.575e-04  3.830e-03  0.1599 y y y n n n n   Subspace collapsed.
+   22   21    3  5.759e-04  3.983e-03  0.1599 y y y n n n n   
+   23   28    3  4.821e-04  3.356e-03  0.1599 y y y n n n n   
+   24   35    3  6.756e-04  4.720e-03  0.1599 y y y n n n n   
+   25   14    4  3.335e-04  2.329e-03  0.1599 y y y y n n n   Subspace collapsed.
+   26   21    4  3.256e-04  2.276e-03  0.1599 y y y y n n n   
+   27   28    4  2.449e-04  1.713e-03  0.1599 y y y y n n n   
+   28   35    4  2.662e-04  1.863e-03  0.1599 y y y y n n n   
+   29   14    4  1.847e-04  1.292e-03  0.1599 y y y y n n n   Subspace collapsed.
+   30   21    4  2.028e-04  1.419e-03  0.1599 y y y y n n n   
+   31   28    4  1.824e-04  1.277e-03  0.1599 y y y y n n n   
+   32   35    4  2.730e-04  1.911e-03  0.1599 y y y y n n n   
+   33   14    4  1.240e-04  8.677e-04  0.1599 y y y y n n n   Subspace collapsed.
+   34   21    4  1.192e-04  8.344e-04  0.1599 y y y y n n n   
+   35   28    4  9.121e-05  6.385e-04  0.1599 y y y y n n n   
+   36   35    4  1.073e-04  7.511e-04  0.1599 y y y y n n n   
+   37   14    6  5.870e-05  4.109e-04  0.1599 y y y y y y n   Subspace collapsed.
+   38   21    6  7.908e-05  5.535e-04  0.1599 y y y y y y n   
+   39   28    6  6.771e-05  4.740e-04  0.1599 y y y y y y n   
+   40   34    6  9.884e-05  6.919e-04  0.1599 y y y y y y n   
+   41   35    6  9.816e-05  6.871e-04  0.1599 y y y y y y n   
+   42   12    6  5.055e-05  3.538e-04  0.1599 y y y y y y n   Subspace collapsed.
+   43   17    6  4.390e-05  3.073e-04  0.1599 y y y y y y n   
+   44   21    6  2.518e-05  1.763e-04  0.1599 y y y y y y n   
+   45   25    6  4.495e-05  3.147e-04  0.1599 y y y y y y n   
+   46   29    6  4.905e-05  3.434e-04  0.1599 y y y y y y n   
+   47   33    6  3.323e-05  2.326e-04  0.1599 y y y y y y n   
+   48   35    6  2.177e-05  1.524e-04  0.1599 y y y y y y n   
+   49   11    6  1.182e-05  8.276e-05  0.1599 y y y y y y n   Subspace collapsed.
+   50   15    6  9.170e-06  6.419e-05  0.1599 y y y y y y n   
+   51   19    6  5.813e-06  4.069e-05  0.1599 y y y y y y n   
+   52   22    6  4.779e-06  3.345e-05  0.1599 y y y y y y n   
+   53   25    6  4.476e-06  3.133e-05  0.1599 y y y y y y n   
+   54   28    6  3.487e-06  2.441e-05  0.1599 y y y y y y n   
+   55   31    6  3.635e-06  2.544e-05  0.1599 y y y y y y n   
+   56   34    6  2.594e-06  1.816e-05  0.1599 y y y y y y n   
+   57   35    6  2.532e-06  1.773e-05  0.1599 y y y y y y n   
+   58   10    6  1.666e-06  1.166e-05  0.1599 y y y y y y n   Subspace collapsed.
+   59   13    6  1.552e-06  1.086e-05  0.1599 y y y y y y n   
+   60   16    6  1.514e-06  1.060e-05  0.1599 y y y y y y n   
+   61   19    6  1.215e-06  8.508e-06  0.1599 y y y y y y n   
+   62   22    6  1.199e-06  8.390e-06  0.1599 y y y y y y n   
+   63   25    6  1.007e-06  7.049e-06  0.1599 y y y y y y n   
+   64   28    6  8.024e-07  5.617e-06  0.1599 y y y y y y n   
+   65   31    6  7.137e-07  4.996e-06  0.1599 y y y y y y n   
+   66   34    6  5.439e-07  3.807e-06  0.1599 y y y y y y n   
+   67   35    6  4.638e-07  3.246e-06  0.1599 y y y y y y n   
+   68    9    6  2.954e-07  2.068e-06  0.1599 y y y y y y n   Subspace collapsed.
+   69   11    6  2.725e-07  1.907e-06  0.1599 y y y y y y n   
+   70   13    6  2.050e-07  1.435e-06  0.1599 y y y y y y n   
+   71   15    6  1.890e-07  1.323e-06  0.1599 y y y y y y n   
+   72   15    6  1.890e-07  1.323e-06  0.1599 y y y y y y n   
+   73   22    6  1.462e-07  1.023e-06  0.1599 y y y y y y n   
+   74   23    7  9.652e-08  6.757e-07  0.1599 y y y y y y y   Converged.
+--------------------------------------------------------------------------------
+  Davidson Summary: 
+ ------------------------------------------------------------
+  State  0: excitation energy =   0.1599 a.u.   (converged)
+  State  1: excitation energy =   0.1767 a.u.   (converged)
+  State  2: excitation energy =   0.1863 a.u.   (converged)
+  State  3: excitation energy =   0.2172 a.u.   (converged)
+  State  4: excitation energy =   0.2387 a.u.   (converged)
+  State  5: excitation energy =   0.2501 a.u.   (converged)
+  State  6: excitation energy =   0.2787 a.u.   (converged)
+ ------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+                             Excited State Summary
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+  Excited state 1 (singlet, A)                                     [converged]
+  ----------------------------------------------------------------------------
+  Term symbol:  2 (1) A                                     R^2 =  7.97811e-14
+
+  Total energy:                                           -263.5700295353 a.u.
+  Excitation energy:                                               4.350925 eV
+
+  Osc. strength:                                                0.006508228048
+  Trans. dip. moment [a.u.]:           [  -0.018967,   -0.105187,    0.222781]
+  <i|r^2|0> [a.u.]:                    [  -0.098380,    0.045681,    0.014422]
+
+
+  V1^2 = 0.9096, V2^2 = 0.0904
+
+  Important amplitudes:
+      occ i      occ j       vir a       vir b          v   
+    ---------------------------------------------------------
+     20 (A) A               22 (A) A                 -0.5886
+     19 (A) A               22 (A) A                  0.2926
+    ---------------------------------------------------------
+  ----------------------------------------------------------------------------
+
+
+  Excited state 2 (singlet, A)                                     [converged]
+  ----------------------------------------------------------------------------
+  Term symbol:  3 (1) A                                     R^2 =  9.18936e-14
+
+  Total energy:                                           -263.5532109067 a.u.
+  Excitation energy:                                               4.808583 eV
+
+  Osc. strength:                                                0.003940449284
+  Trans. dip. moment [a.u.]:           [   0.055522,    0.172100,   -0.027327]
+  <i|r^2|0> [a.u.]:                    [   0.021720,   -0.099555,   -0.008499]
+
+
+  V1^2 = 0.8941, V2^2 = 0.1059
+
+  Important amplitudes:
+      occ i      occ j       vir a       vir b          v   
+    ---------------------------------------------------------
+     20 (A) A               23 (A) A                 -0.6001
+     19 (A) A               23 (A) A                  0.1882
+    ---------------------------------------------------------
+  ----------------------------------------------------------------------------
+
+
+  Excited state 3 (singlet, A)                                     [converged]
+  ----------------------------------------------------------------------------
+  Term symbol:  4 (1) A                                     R^2 =  4.97767e-14
+
+  Total energy:                                           -263.5436188689 a.u.
+  Excitation energy:                                               5.069596 eV
+
+  Osc. strength:                                                0.059524963251
+  Trans. dip. moment [a.u.]:           [   0.396984,    0.566409,    0.028999]
+  <i|r^2|0> [a.u.]:                    [  -0.058656,    0.004839,    0.044784]
+
+
+  V1^2 = 0.8977, V2^2 = 0.1023
+
+  Important amplitudes:
+      occ i      occ j       vir a       vir b          v   
+    ---------------------------------------------------------
+     21 (A) A               22 (A) A                  0.5572
+     19 (A) A               23 (A) A                 -0.3230
+    ---------------------------------------------------------
+  ----------------------------------------------------------------------------
+
+
+  Excited state 4 (singlet, A)                                     [converged]
+  ----------------------------------------------------------------------------
+  Term symbol:  5 (1) A                                     R^2 =  2.15389e-13
+
+  Total energy:                                           -263.5126993661 a.u.
+  Excitation energy:                                               5.910958 eV
+
+  Osc. strength:                                                0.000052351794
+  Trans. dip. moment [a.u.]:           [  -0.007465,   -0.017187,    0.003225]
+  <i|r^2|0> [a.u.]:                    [  -0.059038,    0.010699,    0.072406]
+
+
+  V1^2 = 0.9030, V2^2 = 0.0970
+
+  Important amplitudes:
+      occ i      occ j       vir a       vir b          v   
+    ---------------------------------------------------------
+     18 (A) A               22 (A) A                 -0.6605
+     17 (A) A               22 (A) A                 -0.0771
+    ---------------------------------------------------------
+  ----------------------------------------------------------------------------
+
+
+  Excited state 5 (singlet, A)                                     [converged]
+  ----------------------------------------------------------------------------
+  Term symbol:  6 (1) A                                     R^2 =  3.15413e-13
+
+  Total energy:                                           -263.4912228968 a.u.
+  Excitation energy:                                               6.495363 eV
+
+  Osc. strength:                                                0.001406753106
+  Trans. dip. moment [a.u.]:           [  -0.077994,    0.049731,    0.016849]
+  <i|r^2|0> [a.u.]:                    [  -0.068301,    0.043613,    0.007475]
+
+
+  V1^2 = 0.8751, V2^2 = 0.1249
+
+  Important amplitudes:
+      occ i      occ j       vir a       vir b          v   
+    ---------------------------------------------------------
+     18 (A) A               23 (A) A                  0.6490
+     17 (A) A               23 (A) A                  0.0754
+    ---------------------------------------------------------
+  ----------------------------------------------------------------------------
+
+
+  Excited state 6 (singlet, A)                                     [converged]
+  ----------------------------------------------------------------------------
+  Term symbol:  7 (1) A                                     R^2 =  4.85879e-13
+
+  Total energy:                                           -263.4798674400 a.u.
+  Excitation energy:                                               6.804360 eV
+
+  Osc. strength:                                                0.134116896109
+  Trans. dip. moment [a.u.]:           [  -0.840550,    0.310768,   -0.037705]
+  <i|r^2|0> [a.u.]:                    [  -0.032369,   -0.017270,    0.029001]
+
+
+  V1^2 = 0.9324, V2^2 = 0.0676
+
+  Important amplitudes:
+      occ i      occ j       vir a       vir b          v   
+    ---------------------------------------------------------
+     21 (A) A               23 (A) A                 -0.6078
+     19 (A) A               22 (A) A                 -0.2190
+    ---------------------------------------------------------
+  ----------------------------------------------------------------------------
+
+
+  Excited state 7 (singlet, A)                                     [converged]
+  ----------------------------------------------------------------------------
+  Term symbol:  8 (1) A                                     R^2 =  6.75654e-07
+
+  Total energy:                                           -263.4511930645 a.u.
+  Excitation energy:                                               7.584630 eV
+
+  Osc. strength:                                                0.156182670964
+  Trans. dip. moment [a.u.]:           [  -0.078288,    0.912518,   -0.041078]
+  <i|r^2|0> [a.u.]:                    [   0.043477,    0.086904,   -0.060824]
+
+
+  V1^2 = 0.9092, V2^2 = 0.0908
+
+  Important amplitudes:
+      occ i      occ j       vir a       vir b          v   
+    ---------------------------------------------------------
+     17 (A) A               22 (A) A                  0.4838
+     19 (A) A               23 (A) A                  0.2757
+    ---------------------------------------------------------
+  ----------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+  Time of ADC calculation:  CPU 1387.67 s  wall 1389.02 s
+================================================================================
+********************************************************************************
+ FANOMAN: Finished pump state ADC calculation.
+********************************************************************************
+********************************************************************************
+ FANOMAN: Performing computation of pump <-> probe transitions.
+********************************************************************************
+--------------------------------------------------------------------------------
+ Computing couplings for irreps A -- A
+--------------------------------------------------------------------------------
+ ---------------------------------------------------------------------------------------------------------
+ Couplings for probe state 2 (1) A
+ ---------------------------------------------------------------------------------------------------------
+      pumped
+      state #       E_c - E_b         overlap      osc. strength        dx           dy           dz     
+ ---------------------------------------------------------------------------------------------------------
+        2 (1) A   1.03719151e+01 -2.33030962e-05  3.25621472e-03  [ 2.0995e-02, -5.2718e-03,  1.5250e-03]
+        3 (1) A   1.03550965e+01  6.65784804e-05  1.74322668e-03  [-1.4073e-02,  2.5598e-03, -6.9219e-03]
+        4 (1) A   1.03455044e+01  9.64475083e-06  3.43495017e-03  [ 5.5431e-03, -4.0395e-03, -2.1237e-02]
+        5 (1) A   1.03145849e+01 -3.59798489e-04  5.68942413e-04  [ 3.3581e-03,  8.4304e-03, -6.2402e-04]
+        6 (1) A   1.02931085e+01 -3.97655683e-04  2.76173653e-04  [ 2.1622e-03,  5.3966e-03, -2.5394e-03]
+        7 (1) A   1.02817530e+01  1.19443109e-04  1.71867931e-03  [-1.7433e-03, -1.2297e-03, -1.5690e-02]
+        8 (1) A   1.02530786e+01 -4.40378128e-06  3.57689634e-03  [-1.3314e-02, -1.8507e-02, -1.8774e-03]
+ ---------------------------------------------------------------------------------------------------------
+ ---------------------------------------------------------------------------------------------------------
+ Couplings for probe state 3 (1) A
+ ---------------------------------------------------------------------------------------------------------
+      pumped
+      state #       E_c - E_b         overlap      osc. strength        dx           dy           dz     
+ ---------------------------------------------------------------------------------------------------------
+        2 (1) A   1.03817571e+01 -1.19844520e-05  4.38875150e-03  [ 1.6134e-02, -1.9006e-02, -3.5439e-03]
+        3 (1) A   1.03649385e+01 -3.26586836e-05  1.21056354e-03  [ 6.9728e-03, -9.6805e-03,  5.7323e-03]
+        4 (1) A   1.03553464e+01  2.83026147e-05  3.10124350e-03  [-3.1636e-03, -1.8726e-03,  2.0874e-02]
+        5 (1) A   1.03244269e+01 -4.11248539e-04  1.05589503e-03  [-5.1735e-03, -1.1137e-02, -1.6179e-03]
+        6 (1) A   1.03029505e+01  3.01348973e-04  2.51165013e-04  [ 2.2125e-03,  5.4639e-03, -1.3481e-03]
+        7 (1) A   1.02915950e+01 -8.36839552e-05  3.43156516e-03  [ 2.0833e-03,  5.4054e-03, -2.1601e-02]
+        8 (1) A   1.02629206e+01  1.10529722e-04  5.44516714e-03  [-1.1827e-02, -2.3566e-02,  1.0031e-02]
+ ---------------------------------------------------------------------------------------------------------
+ ---------------------------------------------------------------------------------------------------------
+ Couplings for probe state 4 (1) A
+ ---------------------------------------------------------------------------------------------------------
+      pumped
+      state #       E_c - E_b         overlap      osc. strength        dx           dy           dz     
+ ---------------------------------------------------------------------------------------------------------
+        2 (1) A   1.03841208e+01  5.94134195e-05  3.60765302e-03  [ 1.5104e-02, -1.6823e-02, -3.1566e-03]
+        3 (1) A   1.03673022e+01  7.25151448e-05  1.09799002e-03  [ 7.5361e-03, -8.2374e-03,  5.8494e-03]
+        4 (1) A   1.03577102e+01  1.26028846e-05  3.06873935e-03  [-2.9074e-03, -1.0317e-04,  2.0879e-02]
+        5 (1) A   1.03267907e+01 -3.93924945e-04  6.47317029e-04  [ 5.8468e-03,  7.7184e-03,  5.1605e-04]
+        6 (1) A   1.03053142e+01  3.25550712e-04  1.30678582e-04  [-2.2373e-03, -3.2666e-03, -1.8290e-03]
+        7 (1) A   1.02939587e+01 -8.84967133e-05  2.14286079e-03  [ 1.0805e-03,  4.4769e-03, -1.7060e-02]
+        8 (1) A   1.02652844e+01 -1.30121665e-05  1.57287191e-03  [-5.5716e-03, -1.3171e-02,  5.0322e-03]
+ ---------------------------------------------------------------------------------------------------------
+ ---------------------------------------------------------------------------------------------------------
+ Couplings for probe state 5 (1) A
+ ---------------------------------------------------------------------------------------------------------
+      pumped
+      state #       E_c - E_b         overlap      osc. strength        dx           dy           dz     
+ ---------------------------------------------------------------------------------------------------------
+        2 (1) A   1.03918607e+01  1.92518951e-05  1.87084874e-03  [ 1.5944e-02, -3.3420e-03,  2.1579e-03]
+        3 (1) A   1.03750421e+01 -5.27954527e-05  2.47422601e-03  [-1.6806e-02,  4.7639e-03, -7.2510e-03]
+        4 (1) A   1.03654501e+01  3.71347555e-05  3.40911734e-03  [ 6.0038e-03, -4.1921e-03, -2.0969e-02]
+        5 (1) A   1.03345306e+01 -2.55682939e-04  4.46343421e-04  [-4.8422e-03, -6.2800e-03,  1.3782e-03]
+        6 (1) A   1.03130541e+01 -4.31573772e-04  4.79157580e-04  [-5.1540e-03, -6.4675e-03, -1.1403e-03]
+        7 (1) A   1.03016987e+01  5.03481863e-05  2.27409393e-03  [-7.0468e-04, -1.4427e-03, -1.8126e-02]
+        8 (1) A   1.02730243e+01  6.00507662e-05  1.72224273e-03  [-6.7134e-03, -1.0099e-02, -1.0218e-02]
+ ---------------------------------------------------------------------------------------------------------
+ ---------------------------------------------------------------------------------------------------------
+ Couplings for probe state 6 (1) A
+ ---------------------------------------------------------------------------------------------------------
+      pumped
+      state #       E_c - E_b         overlap      osc. strength        dx           dy           dz     
+ ---------------------------------------------------------------------------------------------------------
+        2 (1) A   1.04067400e+01  5.45003662e-05  2.70163181e-03  [ 1.9083e-02, -3.4404e-03,  3.6633e-03]
+        3 (1) A   1.03899213e+01  1.39036985e-05  2.57578634e-03  [ 1.4899e-02, -4.8923e-03, -1.1223e-02]
+        4 (1) A   1.03803293e+01 -1.21897051e-05  8.33097240e-03  [-5.1087e-03, -1.0689e-03, -3.4302e-02]
+        5 (1) A   1.03494098e+01 -1.72281329e-04  5.04672912e-04  [-3.9877e-03, -7.2119e-03,  2.2873e-03]
+        6 (1) A   1.03279333e+01  2.42150416e-04  3.34288064e-04  [ 2.6497e-03,  6.1538e-03,  1.9133e-03]
+        7 (1) A   1.03165779e+01 -5.77941967e-05  2.83896451e-03  [ 8.4404e-04,  2.4915e-03,  2.0146e-02]
+        8 (1) A   1.02879035e+01  5.87170230e-05  1.37945298e-03  [-5.4323e-03, -9.9114e-03,  8.5663e-03]
+ ---------------------------------------------------------------------------------------------------------
+ ---------------------------------------------------------------------------------------------------------
+ Couplings for probe state 7 (1) A
+ ---------------------------------------------------------------------------------------------------------
+      pumped
+      state #       E_c - E_b         overlap      osc. strength        dx           dy           dz     
+ ---------------------------------------------------------------------------------------------------------
+        2 (1) A   1.04084361e+01  4.19963641e-05  2.07502728e-03  [-1.6795e-02,  3.5051e-03, -2.1636e-03]
+        3 (1) A   1.03916174e+01 -9.65377914e-06  3.63580150e-03  [-1.9067e-02,  6.0331e-03,  1.1174e-02]
+        4 (1) A   1.03820254e+01 -2.21817337e-05  6.76738012e-03  [ 6.6076e-03, -5.1884e-04,  3.0559e-02]
+        5 (1) A   1.03511059e+01  1.25986894e-04  2.56695512e-04  [-3.1108e-03, -5.2439e-03,  1.4996e-04]
+        6 (1) A   1.03296294e+01 -3.40640452e-04  4.10489125e-04  [ 1.5986e-03,  6.3819e-03, -4.0403e-03]
+        7 (1) A   1.03182740e+01  1.04836188e-04  2.73111016e-03  [-8.5443e-04, -5.7298e-03, -1.9065e-02]
+        8 (1) A   1.02895996e+01  7.13941939e-05  4.04565557e-03  [ 7.9109e-03,  1.2345e-02, -1.9359e-02]
+ ---------------------------------------------------------------------------------------------------------
+ ---------------------------------------------------------------------------------------------------------
+ Couplings for probe state 8 (1) A
+ ---------------------------------------------------------------------------------------------------------
+      pumped
+      state #       E_c - E_b         overlap      osc. strength        dx           dy           dz     
+ ---------------------------------------------------------------------------------------------------------
+        2 (1) A   1.04136867e+01  3.23297120e-05  1.41179347e-03  [-7.9044e-03,  1.1123e-02,  4.1416e-03]
+        3 (1) A   1.03968681e+01 -5.36778138e-06  4.45137171e-03  [ 1.4450e-02, -1.5989e-02, -1.3333e-02]
+        4 (1) A   1.03872761e+01 -1.83801490e-06  8.06945069e-03  [-2.7412e-03,  1.1294e-02, -3.2097e-02]
+        5 (1) A   1.03563566e+01  8.21058707e-05  3.05360992e-04  [ 3.2082e-03,  5.5349e-03,  1.8168e-03]
+        6 (1) A   1.03348801e+01  2.87097512e-04  7.31992939e-04  [ 5.9376e-03,  8.2250e-03, -1.8263e-03]
+        7 (1) A   1.03235247e+01 -6.95621241e-05  3.55354539e-03  [ 9.0069e-04,  2.3408e-03, -2.2584e-02]
+        8 (1) A   1.02948503e+01 -4.17940587e-05  1.54716997e-03  [ 6.8196e-03,  1.2333e-02, -5.1790e-03]
+ ---------------------------------------------------------------------------------------------------------
+ ---------------------------------------------------------------------------------------------------------
+ Couplings for probe state 9 (1) A
+ ---------------------------------------------------------------------------------------------------------
+      pumped
+      state #       E_c - E_b         overlap      osc. strength        dx           dy           dz     
+ ---------------------------------------------------------------------------------------------------------
+        2 (1) A   1.04253618e+01  4.48251118e-05  1.12954218e-03  [ 7.9428e-03, -9.0784e-03, -4.1248e-03]
+        3 (1) A   1.04085432e+01 -2.08207034e-05  4.48438711e-03  [-1.5774e-02,  1.5038e-02,  1.3088e-02]
+        4 (1) A   1.03989512e+01  2.81820309e-05  6.84006656e-03  [ 4.9918e-03, -8.5634e-03,  2.9806e-02]
+        5 (1) A   1.03680317e+01 -6.81600304e-05  1.95983826e-04  [ 2.0789e-03,  4.8872e-03, -3.8464e-04]
+        6 (1) A   1.03465552e+01 -3.09462039e-04  5.81615618e-04  [ 5.0172e-03,  6.5041e-03,  4.1043e-03]
+        7 (1) A   1.03351997e+01  9.28423095e-05  3.35047426e-03  [-3.6533e-03, -2.1327e-03,  2.1642e-02]
+        8 (1) A   1.03065253e+01  1.08598403e-05  4.88824892e-04  [-4.6119e-03, -6.8116e-03,  1.8644e-03]
+ ---------------------------------------------------------------------------------------------------------
+ ---------------------------------------------------------------------------------------------------------
+ Couplings for probe state 10 (1) A
+ ---------------------------------------------------------------------------------------------------------
+      pumped
+      state #       E_c - E_b         overlap      osc. strength        dx           dy           dz     
+ ---------------------------------------------------------------------------------------------------------
+        2 (1) A   1.05075697e+01 -1.35472193e-05  1.03208208e-05  [ 1.1403e-03,  3.6055e-04,  2.0729e-04]
+        3 (1) A   1.04907510e+01 -2.62155905e-06  8.56166292e-06  [ 4.3765e-04, -9.9457e-04, -2.0852e-04]
+        4 (1) A   1.04811590e+01  3.93717035e-05  6.93984206e-05  [-2.6239e-03, -1.5234e-03, -8.5218e-04]
+        5 (1) A   1.04502395e+01 -1.42519373e-05  1.80270261e-06  [-6.8942e-05,  3.9882e-04,  3.0813e-04]
+        6 (1) A   1.04287630e+01 -3.93680065e-06  1.32110128e-05  [ 8.3502e-04,  1.0847e-03, -1.6256e-04]
+        7 (1) A   1.04174076e+01 -1.33886308e-04  3.89293278e-04  [ 5.3259e-03,  5.2620e-03,  2.3282e-05]
+        8 (1) A   1.03887332e+01  5.40027938e-07  5.97521659e-05  [-2.0470e-03, -1.8920e-03,  9.2606e-04]
+ ---------------------------------------------------------------------------------------------------------
+ ---------------------------------------------------------------------------------------------------------
+ Couplings for probe state 11 (1) A
+ ---------------------------------------------------------------------------------------------------------
+      pumped
+      state #       E_c - E_b         overlap      osc. strength        dx           dy           dz     
+ ---------------------------------------------------------------------------------------------------------
+        2 (1) A   1.05215060e+01 -2.53220613e-06  2.73013147e-07  [ 1.4591e-04, -4.5377e-05,  1.2479e-04]
+        3 (1) A   1.05046873e+01  4.46027703e-06  8.62105729e-06  [-8.9804e-04, -6.2172e-04, -1.9499e-04]
+        4 (1) A   1.04950953e+01  2.40038361e-05  3.89730625e-05  [ 7.1515e-05, -2.3575e-03,  8.4936e-05]
+        5 (1) A   1.04641758e+01 -8.01627223e-06  1.68685311e-06  [ 3.9505e-04,  1.4764e-04, -2.5286e-04]
+        6 (1) A   1.04426993e+01  3.88886102e-06  8.68362220e-06  [-1.4596e-04, -1.0786e-03, -2.5034e-04]
+        7 (1) A   1.04313439e+01  5.19906752e-05  2.71059012e-04  [ 6.3784e-04, -6.1252e-03, -1.0260e-03]
+        8 (1) A   1.04026695e+01  4.21788831e-05  4.89623563e-05  [-7.2175e-04, -2.5525e-03,  1.5483e-04]
+ ---------------------------------------------------------------------------------------------------------
+********************************************************************************
+ Pump-Probe Results
+********************************************************************************
+ ----------------------------------------------------------------
+ Transitions from pumped state 2 (1) A
+ ----------------------------------------------------------------
+   probed state    E_pr - E_pu    osc. strength       overlap   
+ ----------------------------------------------------------------
+        2 (1) A   2.82234164e+02  3.25621472e-03 -2.33030962e-05
+        3 (1) A   2.82501978e+02  4.38875150e-03 -1.19844520e-05
+        4 (1) A   2.82566298e+02  3.60765302e-03  5.94134195e-05
+        5 (1) A   2.82776912e+02  1.87084874e-03  1.92518951e-05
+        6 (1) A   2.83181796e+02  2.70163181e-03  5.45003662e-05
+        7 (1) A   2.83227949e+02  2.07502728e-03  4.19963641e-05
+        8 (1) A   2.83370828e+02  1.41179347e-03  3.23297120e-05
+        9 (1) A   2.83688523e+02  1.12954218e-03  4.48251118e-05
+       10 (1) A   2.85925512e+02  1.03208208e-05 -1.35472193e-05
+       11 (1) A   2.86304738e+02  2.73013147e-07 -2.53220613e-06
+ ----------------------------------------------------------------
+ ----------------------------------------------------------------
+ Transitions from pumped state 3 (1) A
+ ----------------------------------------------------------------
+   probed state    E_pr - E_pu    osc. strength       overlap   
+ ----------------------------------------------------------------
+        2 (1) A   2.81776506e+02  1.74322668e-03  6.65784804e-05
+        3 (1) A   2.82044320e+02  1.21056354e-03 -3.26586836e-05
+        4 (1) A   2.82108640e+02  1.09799002e-03  7.25151448e-05
+        5 (1) A   2.82319254e+02  2.47422601e-03 -5.27954527e-05
+        6 (1) A   2.82724138e+02  2.57578634e-03  1.39036985e-05
+        7 (1) A   2.82770291e+02  3.63580150e-03 -9.65377914e-06
+        8 (1) A   2.82913170e+02  4.45137171e-03 -5.36778138e-06
+        9 (1) A   2.83230865e+02  4.48438711e-03 -2.08207034e-05
+       10 (1) A   2.85467854e+02  8.56166292e-06 -2.62155905e-06
+       11 (1) A   2.85847080e+02  8.62105729e-06  4.46027703e-06
+ ----------------------------------------------------------------
+ ----------------------------------------------------------------
+ Transitions from pumped state 4 (1) A
+ ----------------------------------------------------------------
+   probed state    E_pr - E_pu    osc. strength       overlap   
+ ----------------------------------------------------------------
+        2 (1) A   2.81515493e+02  3.43495017e-03  9.64475083e-06
+        3 (1) A   2.81783307e+02  3.10124350e-03  2.83026147e-05
+        4 (1) A   2.81847627e+02  3.06873935e-03  1.26028846e-05
+        5 (1) A   2.82058241e+02  3.40911734e-03  3.71347555e-05
+        6 (1) A   2.82463125e+02  8.33097240e-03 -1.21897051e-05
+        7 (1) A   2.82509279e+02  6.76738012e-03 -2.21817337e-05
+        8 (1) A   2.82652157e+02  8.06945069e-03 -1.83801490e-06
+        9 (1) A   2.82969852e+02  6.84006656e-03  2.81820309e-05
+       10 (1) A   2.85206841e+02  6.93984206e-05  3.93717035e-05
+       11 (1) A   2.85586068e+02  3.89730625e-05  2.40038361e-05
+ ----------------------------------------------------------------
+ ----------------------------------------------------------------
+ Transitions from pumped state 5 (1) A
+ ----------------------------------------------------------------
+   probed state    E_pr - E_pu    osc. strength       overlap   
+ ----------------------------------------------------------------
+        2 (1) A   2.80674131e+02  5.68942413e-04 -3.59798489e-04
+        3 (1) A   2.80941945e+02  1.05589503e-03 -4.11248539e-04
+        4 (1) A   2.81006265e+02  6.47317029e-04 -3.93924945e-04
+        5 (1) A   2.81216879e+02  4.46343421e-04 -2.55682939e-04
+        6 (1) A   2.81621763e+02  5.04672912e-04 -1.72281329e-04
+        7 (1) A   2.81667916e+02  2.56695512e-04  1.25986894e-04
+        8 (1) A   2.81810795e+02  3.05360992e-04  8.21058707e-05
+        9 (1) A   2.82128490e+02  1.95983826e-04 -6.81600304e-05
+       10 (1) A   2.84365479e+02  1.80270261e-06 -1.42519373e-05
+       11 (1) A   2.84744705e+02  1.68685311e-06 -8.01627223e-06
+ ----------------------------------------------------------------
+ ----------------------------------------------------------------
+ Transitions from pumped state 6 (1) A
+ ----------------------------------------------------------------
+   probed state    E_pr - E_pu    osc. strength       overlap   
+ ----------------------------------------------------------------
+        2 (1) A   2.80089726e+02  2.76173653e-04 -3.97655683e-04
+        3 (1) A   2.80357540e+02  2.51165013e-04  3.01348973e-04
+        4 (1) A   2.80421860e+02  1.30678582e-04  3.25550712e-04
+        5 (1) A   2.80632475e+02  4.79157580e-04 -4.31573772e-04
+        6 (1) A   2.81037358e+02  3.34288064e-04  2.42150416e-04
+        7 (1) A   2.81083512e+02  4.10489125e-04 -3.40640452e-04
+        8 (1) A   2.81226390e+02  7.31992939e-04  2.87097512e-04
+        9 (1) A   2.81544085e+02  5.81615618e-04 -3.09462039e-04
+       10 (1) A   2.83781074e+02  1.32110128e-05 -3.93680065e-06
+       11 (1) A   2.84160301e+02  8.68362220e-06  3.88886102e-06
+ ----------------------------------------------------------------
+ ----------------------------------------------------------------
+ Transitions from pumped state 7 (1) A
+ ----------------------------------------------------------------
+   probed state    E_pr - E_pu    osc. strength       overlap   
+ ----------------------------------------------------------------
+        2 (1) A   2.79780728e+02  1.71867931e-03  1.19443109e-04
+        3 (1) A   2.80048543e+02  3.43156516e-03 -8.36839552e-05
+        4 (1) A   2.80112863e+02  2.14286079e-03 -8.84967133e-05
+        5 (1) A   2.80323477e+02  2.27409393e-03  5.03481863e-05
+        6 (1) A   2.80728361e+02  2.83896451e-03 -5.77941967e-05
+        7 (1) A   2.80774514e+02  2.73111016e-03  1.04836188e-04
+        8 (1) A   2.80917393e+02  3.55354539e-03 -6.95621241e-05
+        9 (1) A   2.81235087e+02  3.35047426e-03  9.28423095e-05
+       10 (1) A   2.83472077e+02  3.89293278e-04 -1.33886308e-04
+       11 (1) A   2.83851303e+02  2.71059012e-04  5.19906752e-05
+ ----------------------------------------------------------------
+ ----------------------------------------------------------------
+ Transitions from pumped state 8 (1) A
+ ----------------------------------------------------------------
+   probed state    E_pr - E_pu    osc. strength       overlap   
+ ----------------------------------------------------------------
+        2 (1) A   2.79000459e+02  3.57689634e-03 -4.40378128e-06
+        3 (1) A   2.79268273e+02  5.44516714e-03  1.10529722e-04
+        4 (1) A   2.79332593e+02  1.57287191e-03 -1.30121665e-05
+        5 (1) A   2.79543207e+02  1.72224273e-03  6.00507662e-05
+        6 (1) A   2.79948091e+02  1.37945298e-03  5.87170230e-05
+        7 (1) A   2.79994244e+02  4.04565557e-03  7.13941939e-05
+        8 (1) A   2.80137123e+02  1.54716997e-03 -4.17940587e-05
+        9 (1) A   2.80454818e+02  4.88824892e-04  1.08598403e-05
+       10 (1) A   2.82691807e+02  5.97521659e-05  5.40027938e-07
+       11 (1) A   2.83071034e+02  4.89623563e-05  4.21788831e-05
+ ----------------------------------------------------------------
+********************************************************************************
+ End of Pump-Probe Results
+********************************************************************************
+********************************************************************************
+ FANOMAN: Finished computation of pump <-> probe transitions.
+********************************************************************************
+--------------------------------------------------------------------------------
+ >>> fanoman shutting down. <<<
+--------------------------------------------------------------------------------
+ 
+ --------------------------------------------------------------
+ 
+                    Orbital Energies (a.u.)
+ --------------------------------------------------------------
+ 
+ Alpha MOs
+ -- Occupied --
+-15.603 -15.602 -11.312 -11.306 -11.300 -11.298  -1.291  -1.208
+ -1.038  -0.884  -0.880  -0.709  -0.693  -0.658  -0.589  -0.560
+ -0.517  -0.498  -0.431  -0.412  -0.353
+ -- Virtual --
+  0.084   0.111   0.190   0.207   0.226   0.232   0.306   0.321
+  0.404   0.438   0.461   0.528   0.590   0.610   0.648   0.656
+  0.681   0.701   0.706   0.744   0.756   0.771   0.792   0.796
+  0.878   0.885   0.915   0.950   1.002   1.027   1.069   1.076
+  1.079   1.098   1.131   1.157   1.172   1.187   1.265   1.274
+  1.351   1.398   1.414   1.423   1.466   1.513   1.578   1.669
+  1.718   1.746   1.768   1.817   1.822   1.855   1.866   1.884
+  1.894   1.928   1.934   1.999   2.090   2.130   2.143   2.173
+  2.235   2.262   2.402   2.412   2.424   2.499   2.560   2.597
+  2.621   2.653   2.681   2.772   2.811   3.057   3.062   3.077
+  3.140   3.290   3.638  19.489  19.639  20.041  20.053  22.461
+ 22.525  22.573  22.603  22.804  22.991  23.178  23.349  23.417
+ 23.506  23.716  23.871  26.613  26.843  30.503  30.561  30.738
+ 30.855  31.054  31.317
+ --------------------------------------------------------------
+ 
+          Ground-State Mulliken Net Atomic Charges
+
+     Atom                 Charge (a.u.)
+  ----------------------------------------
+      1 C                     0.095213
+      2 C                     0.027587
+      3 N                    -0.329808
+      4 C                     0.104756
+      5 C                     0.091650
+      6 N                    -0.306040
+      7 H                     0.079432
+      8 H                     0.105032
+      9 H                     0.048001
+     10 H                     0.084176
+  ----------------------------------------
+  Sum of atomic charges =    -0.000000
+
+ -----------------------------------------------------------------
+                    Cartesian Multipole Moments
+ -----------------------------------------------------------------
+    Charge (ESU x 10^10)
+                 0.0000
+    Dipole Moment (Debye)
+         X       0.1042      Y       0.2204      Z      -0.0464
+       Tot       0.2482
+    Quadrupole Moments (Debye-Ang)
+        XX     -36.4305     XY       5.5649     YY     -31.0909
+        XZ       0.5479     YZ       0.0536     ZZ     -37.1218
+    Octopole Moments (Debye-Ang^2)
+       XXX      -0.4358    XXY       0.7770    XYY       0.3590
+       YYY       0.5302    XXZ      -0.6717    XYZ      -0.2620
+       YYZ       0.3083    XZZ       0.3160    YZZ       0.4093
+       ZZZ       0.0130
+    Hexadecapole Moments (Debye-Ang^3)
+      XXXX    -261.8070   XXXY      29.9071   XXYY     -94.0225
+      XYYY      -3.5584   YYYY    -233.6442   XXXZ       3.4602
+      XXYZ       1.0646   XYYZ       0.7113   YYYZ       0.1829
+      XXZZ     -55.1786   XYZZ      -1.5148   YYZZ     -55.0124
+      XZZZ       0.1733   YZZZ       0.3340   ZZZZ     -39.0749
+ -----------------------------------------------------------------
+Archival summary:
+1\1\Knecht20\SP\HF\BasisUnspecified\244\tkaczun\TueDec2812:18:212021TueDec2812:18:212021\0\\#,HF,BasisUnspecified,\\0,1\N\C,1,1.33798\H,2,1.14214,1,115.82\C,1,1.35224,2,116.652,3,177.002,0\H,4,1.15289,1,111.199,2,-175.551,0\C,4,1.3932,1,124.199,2,4.53589,0\H,6,1.20827,4,132.723,1,168.238,0\N,6,1.41065,4,120.732,1,-3.32724,0\C,8,1.35851,6,114.53,4,5.47753,0\H,9,1.05916,8,101.876,6,-178.202,0\\HF=-262.656491\\@
+
+ Total job time:  9745.54s(wall), 9738.45s(cpu) 
+ Tue Dec 28 12:18:21 2021
+
+        *************************************************************
+        *                                                           *
+        *  Thank you very much for using Q-Chem.  Have a nice day.  *
+        *                                                           *
+        *************************************************************
+
+
