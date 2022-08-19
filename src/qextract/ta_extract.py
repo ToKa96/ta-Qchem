@@ -35,8 +35,6 @@ import os
 import glob
 import h5py
 
-from qextract import extract
-
 # TODO: write docstrings
 # TODO: parallelization and
 # TODO: 'append mode'
@@ -52,7 +50,7 @@ class TAtoHDF5:
     class to read in excitation energies and oscillator strengths of a directory and store them in an hdf5 File.
     """
 
-    def createHDF5(self, pathname, filename, h5_mode = 'a', extractor=None, get_pop=None, **kwargs):
+    def createHDF5(self, pathname, filename, h5_mode='a', extractor=None, get_pop=None, **kwargs):
         """
         creates an hdf5 File containing excitation energies and oscillator strengths of the pump_probe calculation in the given directory.
 
@@ -68,8 +66,9 @@ class TAtoHDF5:
 
         """
         self.pathname = pathname
-        
+
         if extractor is None:
+            from qextract import extract
             self.extractor = extract.ExtractFile().extractFile
         else:
             self.extractor = extractor
@@ -125,7 +124,6 @@ class TAtoHDF5:
         None.
 
         """
-
         for filepath in outfiles:
             currentFileData = self.extractor(filepath)
 
@@ -150,7 +148,8 @@ class TAtoHDF5:
                 # faield convergence? Is this even possible at this stage?
                 hdf5File.create_dataset(dataset_name + 'osc_strength',
                                         data=currentFileData.pump_probe.loc[pump, 'Osc. strength'].to_numpy())
-    #? might this already work for directories with time and outputfiles with TRAJ name?
+
+    # ? might this already work for directories with time and outputfiles with TRAJ name?
     def getGroupfromPath(self, filepath):
         """
         generates the hdf5 groups for the data of the file based on its path
