@@ -1,6 +1,8 @@
 """
 reading and storing as .hdf of TA data calculated with Qchem using ADC pump-probe.
 
+!Attention! This stuff down here is outdated:
+
 This module is intended for a certain data structure:
 
 root_dir/timestep_dir/structureA_bla.out
@@ -35,14 +37,14 @@ import os
 import glob
 import h5py
 
-# TODO: write docstrings
-# TODO: parallelization and
-# TODO: 'append mode'
+from qextract import extract
 # TODO: command line call
+# TODO: modifiy get_pop?
 
 
-def writeHDF5(outFilepath, hdf5_filename):
-    TAtoHDF5().createHDF5(outFilepath, hdf5_filename)
+def writeHDF5(outFilepath, hdf5_filename, h5_mode='a', extractor=None, get_pop=None, **kwargs):
+    TAtoHDF5().createHDF5(outFilepath, hdf5_filename, h5_mode=h5_mode,
+                          extractor=extractor, get_pop=get_pop, **kwargs)
 
 
 class TAtoHDF5:
@@ -234,6 +236,40 @@ class TAtoHDF5:
 
 
 if __name__ == "__main__":
-    TAtoHDF5().createHDF5(
-        '/export/home/tkaczun/scripts/qextract/data/ta_data_test', 'test.hdf5')
-    os.remove('test.hdf5')
+    # finds the location of this file (i think) used to ensure this file runs with
+    # the supplied test data in the data/ directory idnependently of the (linux)
+    # machine
+    base_path = '/'.join(__file__.split('/')[:-3])
+
+    # set the path for input directory where the calculations from which to extract are located
+    input_dir = '/data/ta_extract_test/input'
+    # set the destination where the h5py file should be written
+    hdf5_file = '/data/ta_extract_test/output/test.hdf5'
+
+    # removes any previously written h5p file to prevent an Exception because the file
+    # already exists
+    if os.path.isfile(base_path + hdf5_file):
+        os.remove(base_path + hdf5_file)
+
+    # writes the actuals HDF5 file
+    writeHDF5(base_path + input_dir,
+              base_path + hdf5_file)
+
+    # prints out its conten
+    with h5py.File(base_path + hdf5_file, 'r') as h5f:
+
+        def visitor(name, node):
+            if isinstance(node, h5py.Group):
+                # print(node.name, 'is a Group')
+                pass
+            elif isinstance(node, h5py.Dataset):
+                if (node.dtype == 'object'):
+                    # print (node.name, 'is an object Dataset')
+                    pass
+                else:
+                    print(node.name, 'is a Dataset')
+                    print(node[:])
+            else:
+                print(node.name, 'is an unknown type')
+
+        h5f.visititems(visitor)

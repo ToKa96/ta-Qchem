@@ -1,6 +1,6 @@
-# Qchem Extract
+# taqchem
 
-This is a simple package written to extract dta obtained by Qchem ADC, CVS-ADC and FANO (ADC) calculations during my Masterthesis. 
+This is a simple package written to extract transient absorption data obtained by Qchem ADC, CVS-ADC and FANO (ADC) calculations during my Masterthesis.
 
 ## Use with care 
 

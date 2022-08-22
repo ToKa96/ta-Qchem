@@ -5,6 +5,8 @@ import os
 import subprocess
 import numpy as np
 
+#TODO: finish docstrings/documentation
+
 
 def read_qchem_temp(qchem_template):
     """_summary_
@@ -221,19 +223,21 @@ if __name__ == "__main__":
     from functools import partial
     import glob
 
+    # finds the location of this file (i think) used to ensure this file runs with 
+    # the supplied test data in the data/ directory idnependently of the (linux)
+    # machine
+    base_path = '/'.join(__file__.split('/')[:-2])
+    
     # usage example and test
     # 1st define paths
     # to the qchem input template
     #! those paths will not work on other machines!
-    # qchem_temp = '/home/tobias/heibox/ta_qchem/data/ta_send_test/input/qchem_test.template'
-    qchem_temp = '/export/home/tkaczun/scripts/ta_qchem/data/ta_send_test/input/qchem_test.template'
+    qchem_temp = base_path + '/data/ta_send_test/input/qchem_test.template'
     # to the dir in whicht the input files are to be placed in general
-    # q_dir = '/home/tobias/heibox/ta_qchem/data/ta_send_test/output/'    
-    q_dir = '/export/home/tkaczun/scripts/ta_qchem/data/ta_send_test/output/'
+    q_dir = base_path + '/data/ta_send_test/output/'
     # to the files/dirs from whch you want to extract the structur and
     # other stuff for the creation of the qchem input file
-    # data_dir = '/home/tobias/heibox/ta_qchem/data/ta_send_test/input/'
-    data_dir = '/export/home/tkaczun/scripts/ta_qchem/data/ta_send_test/input/'
+    data_dir = base_path + '/data/ta_send_test/input/'
     
     # set timesteps
     timesteps = np.arange( 0.0, 20.0, step=4)
