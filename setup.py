@@ -1,4 +1,4 @@
 from setuptools import setup, find_packages
 
-setup(name="qextract", packages=find_packages())
+setup(name="taqchem", packages=find_packages())
 

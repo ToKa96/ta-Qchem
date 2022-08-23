@@ -7,7 +7,7 @@ import os
 import numpy as np
 import pandas as pd
 
-from qextract import adcData
+from qextract import adc_data
 
 
 class NotEndOfCalcError(Exception):
@@ -395,7 +395,7 @@ class ExtractFile:
             [description]
         """
 
-        cur_data = adcData.adcData(filename)
+        cur_data = adc_data.ADCData(filename)
 
         exRem = self.extractREM(outfile)
         exOth = ExtractOther()
