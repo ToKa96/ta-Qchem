@@ -1,4 +1,4 @@
-# taqchem
+# ta_qchem
 
 This is a simple package written to extract transient absorption data obtained by Qchem ADC, CVS-ADC and FANO (ADC) calculations during my Masterthesis.
 

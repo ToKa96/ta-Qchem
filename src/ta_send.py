@@ -1,4 +1,7 @@
 """
+This script can be used to generate the necessary qchem input files for the calculation of
+transient absorption spectra from Molecular Dynamics simulations.
+
 Author: Tobias Kaczun
 """
 import os
