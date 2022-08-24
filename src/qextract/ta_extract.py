@@ -239,23 +239,23 @@ class TAtoHDF5:
             structur = os.path.basename(pop_file).split('_')[0]
             with open(pop_file) as pf:
                 for line in pf:
+                    time = float(line.split()[0])
+                    pop = [float(i) for i in line.split()[1:]]
+                    
                     try:
-                        time = float(line.split()[0])
-                        pop = [float(i) for i in line.split()[1:]]
-
                         if hdf5_file['{time}/{structur}'.format(time=time, structur=structur)]:
                             hdf5_file.create_dataset('/{time}/{structur}/{pattern}'.format(
                                 time=time, structur=structur, pattern=pattern), data=pop)                            
 
-                        if hdf5_file['{structur}/{time}'.format(time=time, structur=structur)]:
-                            hdf5_file.create_dataset('/{structur}/{time}/pop'.format(
-                                time=time, structur=structur), data=pop)
-
                     except (IndexError, KeyError):
-                        print('Index or Key Error encountered in {time}/{structur}'.format(
-                            time=time, structur=structur))
-                        pass
-
+                        try:
+                            if hdf5_file['{structur}/{time}'.format(time=time, structur=structur)]:
+                                hdf5_file.create_dataset('/{structur}/{time}/pop'.format(
+                                    time=time, structur=structur), data=pop)
+                        except (IndexError, KeyError):
+                            # print('Index or Key Error encountered in {time}/{structur}'.format(
+                            #     time=time, structur=structur))
+                            pass
 
 if __name__ == "__main__":
     # finds the location of this file (i think) used to ensure this file runs with
