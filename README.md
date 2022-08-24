@@ -40,7 +40,14 @@ all fields which are to be completed by the script in the qchem input file must 
     {structur}
     $end
 
+    $rem
+        METHOD  ADC(2)
+        E_SIGNLETS {singlets}
+    $end
+
 ==all those keywords must at some point in the script be given as keys in a dict (empty string is ok) otehrwise an Error will be raised!==
+
+this can be achieved either at the class instance level using the  `qin_options` keyword, at the function level using the  `qin_options` keyword when calling `write_qchem_file` or by suppling them during the `extract_structur` function. In all cases they have to be supplied as dictionary key value pairs.
 
 the followup scripts are currently assuming the following directory/filestructur:
 
