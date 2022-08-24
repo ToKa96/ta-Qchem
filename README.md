@@ -31,7 +31,7 @@ if you want to specify your own path for the qchem input files you can do so by 
 
 further 'options' for the qchem template can also be returned as additional keywords.
 
-### ==Attention==
+### ***Attention***
 
 all fields which are to be completed by the script in the qchem input file must be specified by a keyword in braces for example:
 
@@ -45,19 +45,33 @@ all fields which are to be completed by the script in the qchem input file must 
         E_SIGNLETS {singlets}
     $end
 
-==all those keywords must at some point in the script be given as keys in a dict (empty string is ok) otehrwise an Error will be raised!==
+***all those keywords must at some point in the script be given as keys in a dict (empty string is ok) otehrwise an Error will be raised!***
 
 this can be achieved either at the class instance level using the  `qin_options` keyword, at the function level using the  `qin_options` keyword when calling `write_qchem_file` or by suppling them during the `extract_structur` function. In all cases they have to be supplied as dictionary key value pairs.
 
 the followup scripts are currently assuming the following directory/filestructur:
 
-    outputdit/
+    outputdir/
     |----Trajectory1/
     |    |----0.0.out (qchem output file at 0 fs or whatever else start timestep you have)
     |    |----0.5.out
     |----Trajectory2/
     |    |----0.0.out
     ...
+
+## qchem_to_hdf5
+
+you will likely have to implement a `get_pop` function (or generator) which will take as argument a general path (parent directory) to the files in which the population data is contained and returns the population data, time and trajectory as key values pairs of a dictionary in a list (or via generator). Example:
+
+~~~python
+def get_pop(path):
+    # iterate over files in the parent directories and subdirs
+    for files in path:
+        # whatever
+
+        # as generator
+        yield {'traj': trajectory (type:str), 'time': time (type:str), 'pop': list or np.ndarray}
+~~~
 
 ## Use with care 
 

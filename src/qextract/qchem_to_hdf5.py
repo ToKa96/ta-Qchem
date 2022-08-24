@@ -1,48 +1,14 @@
+"""_summary_
 """
-reading and storing as .hdf of TA data calculated with Qchem using ADC pump-probe.
-
-!Attention! This stuff down here is outdated:
-
-This module is intended for a certain data structure:
-
-root_dir/timestep_dir/structureA_bla.out
-
-eg.:
-
-pyrazine_TA/
-|---0fs/
-|   |---StructureA_bla.out
-|   |---StructureB_bla.out
-|---20fs/
-|   |---StructureC_bla.out
-|   |---StructureD_bla.out
-
-This will result in the following structure in the hdf:
-
-/ (root)
-|---0fs/
-|   |---StructureA/
-|   |   |---pump1/
-|   |   |   |---'exc_energy'    (Dataset)   
-|   |   |   |---'osc_strength'  (Dataset)
-|   |   |---pump2/
-|   |   |   ...
-...
-With only the first part of the .out Filename up to the first '_' will be used as group name in the hdf File
-
-Author: Tobias Kaczun
-"""
-
+    
 import os
 import glob
 import h5py
 
 from qextract import fano_extract
-# TODO: command line call
-# TODO: modifiy get_pop?
 
 
-def write_hdf5(qchem_calc, hdf5_filename, h5_mode='a', pop_path=None, extractor=None, get_pop=None, **kwargs):
+def write_hdf5(qchem_calc, hdf5_filename, file_structur='TRAJ/TIME', h5_mode='a', pop_path=None, extractor=None, get_pop=None, **kwargs):
     """wrapper function for the creation of an hdf5 file containing the excitation energy and oscillator strength
     of all time steps calculated for the transient absorption spectrum.
 
@@ -62,16 +28,13 @@ def write_hdf5(qchem_calc, hdf5_filename, h5_mode='a', pop_path=None, extractor=
     get_pop : callable, optional
         parser or other function which specifies how to set the excited state population, by default None
     """
-    TAtoHDF5().create_hdf5(qchem_calc, hdf5_filename, h5_mode=h5_mode,
+    QChemHDF5().create_hdf5(qchem_calc, hdf5_filename, file_structur=file_structur, h5_mode=h5_mode,
                           extractor=extractor, pop_path=pop_path, get_pop=get_pop, **kwargs)
 
 
-class TAtoHDF5:
-    """
-    class to read in excitation energies and oscillator strengths of a directory and store them in an hdf5 File.
-    """
-
-    def create_hdf5(self, pathname, filename, h5_mode='a', pop_path=None, extractor=None, get_pop=None, **kwargs):
+class QChemHDF5():
+    
+    def create_hdf5(self, pathname, filename, file_structur='traj/time', h5_mode='a', pop_path=None, extractor=None, get_pop=None, **kwargs):
         """
         creates an hdf5 File containing excitation energies and oscillator strengths of the pump_probe calculation in the given directory.
 
@@ -87,12 +50,11 @@ class TAtoHDF5:
 
         """
         self.pathname = pathname
-        # self.pop_path = pop_path
         
-        # if get_pop is None:
-        #     self.pop = self._set_pop
-        # else:
-        #     self.pop = get_pop
+        if pop_path is None:
+            pop_path = pathname
+        
+        self._get_file_structur(file_structur)
 
         if extractor is None:
             from qextract import fano_extract
@@ -103,18 +65,30 @@ class TAtoHDF5:
         if self.pathname[-1] != '/':
             self.pathname = self.pathname + '/'
 
-        outfiles = self.get_output_files()
+        outfiles = self._get_output_files()
 
         with h5py.File(filename, h5_mode, **kwargs) as hdf5_file:
-            self.iterate_files(outfiles, hdf5_file)
+            self._iterate_files(outfiles, hdf5_file)
 
             if get_pop is None:
                 self._set_pop(hdf5_file, pop_path=pop_path)
             else:
                 #! add a possibility to give args to get_pop?!
-                get_pop(hdf5_file, pop_path=pop_path)
-
-    def get_output_files(self):
+                self._set_pop_external(hdf5_file, get_pop, pop_path)
+    
+    def _set_pop_external(self, hdf5_file, get_pop, pop_path):
+        
+        for dictionary in get_pop(pop_path):
+            traj = dictionary['traj']
+            time = dictionary['time']
+            pop = dictionary['pop']
+            dataset_name = '/' + traj + '/' + time + '/'
+            try:
+                hdf5_file.create_dataset(dataset_name + 'pop', data=pop)
+            except (KeyError, IndexError):
+                print(f'Index or Key Error encountered in {traj}/{time}')
+            
+    def _get_output_files(self):
         """
         iterates over all files and subdirectories in the path and collects path to all .out files.
 
@@ -134,8 +108,8 @@ class TAtoHDF5:
                     outfiles.append(root + '/' + file)
 
         return outfiles
-
-    def iterate_files(self, outfiles, hdf5_file):
+    
+    def _iterate_files(self, outfiles, hdf5_file):
         """
         iterates over .out files and appends their Pump-Probe excitation energy and oscillator strength to the HDF5.
 
@@ -154,8 +128,10 @@ class TAtoHDF5:
         for filepath in outfiles:
             current_file_data = self.extractor(filepath)
 
-            groupstr = self.get_group_from_path(filepath)
-            # iterates over all unique pump state (indeces)            
+            groupstr = self._get_group_from_path(filepath)
+            # iterates over all unique pump state (indeces)
+            # FIXME: this might genereate problems
+            # TODO: rewrite ADCData and extractor in a way which is more flexible!      
             for pump in current_file_data.get_pump_states():
                 # creates the base names for the datasets belonging to this pump state
                 # it seems white spaces in the group/ dataset names create problems ...
@@ -166,55 +142,19 @@ class TAtoHDF5:
                 
                 for key in data.keys():
                     hdf5_file.create_dataset(dataset_name + key, data=data[key])
-                    
-            # self.pop()
-                
-    # ? might this already work for directories with time and outputfiles with TRAJ name?
-    def get_group_from_path(self, filepath):
-        """
-        generates the hdf5 groups for the data of the file based on its path
-        and its filename.
-
-        first part of the filename separated by "_" is expected to be the
-        identifier (structure) used.
-
-        Parameters
-        ----------
-        filepath : str
-            path to the qchem .out file
-
-        Returns
-        -------
-        groupstr : str
-            hdf5 path with Groups based on directory and the filename
-
-        """
-        groupstr = filepath.replace(self.pathname, '')
-        filename = groupstr.split('/')[-1]
-        # should a filename start with '_' it will not append any structure name to the
-        # the groupstr
-        if not filename.split('_')[1:]:
-            # Not sure whether this might create problems in some special cases
-            noStructureName = ''
-        else:
-            noStructureName = '_' + '_'.join(filename.split('_')[1:])
-        # This might create bugs if a directory and a structure have the
-        # same name
-        groupstr = groupstr.replace(noStructureName, '')
-
-        groupstr = groupstr.replace('.out', '')
-
-        if groupstr[-1] != '/':
-            groupstr = groupstr + '/'
-
-        if groupstr[0] != '/':
-            groupstr = '/' + groupstr
-
-        return groupstr
     
-    # def _set_pop2(self, filename):
-    #     pass
-
+    def _get_file_structur(self, file_structur):
+        file_structur.upper()
+        split = file_structur.split('/')
+        self.traj_pos = split.index('TRAJ')
+        self.time_pos = split.index('TIME')
+        
+    #* NOTE: this might be even better handeld at the extractor level...
+    def _get_group_from_path(self, filepath):
+        path = filepath.replace(self.pathname, '')
+        groupstr = '/' + path.split('/')[self.traj_pos] + '/' + path.split('/')[self.time_pos] + '/'
+        return groupstr.replace('.out', '')
+    
     def _set_pop(self, hdf5_file, pop_path=None):
         """[summary]
 
@@ -243,19 +183,20 @@ class TAtoHDF5:
                     pop = [float(i) for i in line.split()[1:]]
                     
                     try:
-                        if hdf5_file['{time}/{structur}'.format(time=time, structur=structur)]:
-                            hdf5_file.create_dataset('/{time}/{structur}/{pattern}'.format(
-                                time=time, structur=structur, pattern=pattern), data=pop)                            
+                        if hdf5_file['{structur}/{time}'.format(time=time, structur=structur)]:
+                            hdf5_file.create_dataset('/{structur}/{time}/pop'.format(
+                                time=time, structur=structur), data=pop)
 
                     except (IndexError, KeyError):
                         try:
-                            if hdf5_file['{structur}/{time}'.format(time=time, structur=structur)]:
-                                hdf5_file.create_dataset('/{structur}/{time}/pop'.format(
-                                    time=time, structur=structur), data=pop)
+                            if hdf5_file['{time}/{structur}'.format(time=time, structur=structur)]:
+                                hdf5_file.create_dataset('/{time}/{structur}/{pattern}'.format(
+                                    time=time, structur=structur, pattern=pattern), data=pop)                            
                         except (IndexError, KeyError):
                             # print('Index or Key Error encountered in {time}/{structur}'.format(
                             #     time=time, structur=structur))
                             pass
+
 
 if __name__ == "__main__":
     # finds the location of this file (i think) used to ensure this file runs with
@@ -277,7 +218,7 @@ if __name__ == "__main__":
     write_hdf5(base_path + input_dir,
               base_path + hdf5_file)
 
-    # prints out its conten
+    # prints out its contentmostly 
     with h5py.File(base_path + hdf5_file, 'r') as h5f:
 
         def visitor(name, node):
