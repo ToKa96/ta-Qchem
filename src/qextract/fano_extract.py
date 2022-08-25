@@ -26,25 +26,25 @@ class Extract:
         self.finished = False
         self.data = {}
 
-    def readLine(self, line):
+    def read_line(self, line):
         pass
 
-    def checkStart(self, line):
+    def check_start(self, line):
 
         if self.section_start in line:
             self.section = True
 
-    def checkEnd(self, line):
+    def check_end(self, line):
 
         if self.section_end in line:
             self.finished = True
 
-    def getData(line):
+    def get_data(line):
         pass
 
 
 # TODO: Update docstrings!
-class ExtractRem(Extract):
+class extract_rem(Extract):
     """
     class that deals with extracting information from the $rem section
     of qchem .out files.
@@ -74,14 +74,14 @@ class ExtractRem(Extract):
     def __init__(self):
         Extract.__init__(self)
 
-    def readLine(self, line):
+    def read_line(self, line):
         """
         wrapper function that sends the line to subroutines depending on
         flags.
 
         calls checkRemStart until 'rem_section' is set to True, the it
         constantly checks for the end of the $rem section and if that
-        has not yet been reached calls the getData Method.
+        has not yet been reached calls the get_data Method.
 
         Parameters
         ----------
@@ -89,14 +89,14 @@ class ExtractRem(Extract):
                 line from textfile to be read
         """
         if not self.section:
-            self.checkStart(line)
+            self.check_start(line)
 
         else:
-            self.checkEnd(line)
+            self.check_end(line)
             if not self.finished:
-                self.getData(line)
+                self.get_data(line)
 
-    def getData(self, line):
+    def get_data(self, line):
         """
         Extracts the actual data from the rem line.
 
@@ -167,14 +167,14 @@ class ExtractExcitation(Extract):
             'state': [],
         }
 
-    def readLine(self, line):
+    def read_line(self, line):
         """
         wrapper function that sends the line to subroutines depending on
         flags.
 
         calls checkExcStart until 'exc_section' is set to True, then it
         constantly checks for the end of the $rem section and if that
-        has not yet been reached calls the getData Method.
+        has not yet been reached calls the get_data Method.
 
         Parameters
         ----------
@@ -182,14 +182,14 @@ class ExtractExcitation(Extract):
                 line from textfile to be read
         """
         if not self.section:
-            self.checkStart(line)
+            self.check_start(line)
 
         else:
-            self.checkEnd(line)
+            self.check_end(line)
             if not self.finished:
-                self.getData(line)
+                self.get_data(line)
 
-    def getData(self, line):
+    def get_data(self, line):
         """
         Extracts the actual data from the exc section lines.
 
@@ -222,7 +222,7 @@ class ExtractExcitation(Extract):
         if ExtractExcitation.osc_strength_match in line:
             self.data['Osc. strength'][-1] = float(line.split()[-1])
 
-    def getDataFrame(self):
+    def get_dataframe(self):
         """[summary]
 
         Returns
@@ -258,7 +258,7 @@ class ExtractPumpProbe(Extract):
         self.data = {}
         self.cur_pump_key = None
 
-    def readLine(self, line):
+    def read_line(self, line):
         """[summary]
 
         Parameters
@@ -267,12 +267,12 @@ class ExtractPumpProbe(Extract):
             [description]
         """
         if not self.section:
-            self.checkStart(line)
+            self.check_start(line)
         else:
             if not self.finished:
-                self.getData(line)
+                self.get_data(line)
 
-    def getData(self, line):
+    def get_data(self, line):
         """[summary]
 
         Parameters
@@ -289,9 +289,9 @@ class ExtractPumpProbe(Extract):
                 probe_values = [float(x) for x in line.split()[3:]]
                 self.data[self.cur_pump_key][probe_state] = probe_values
             except (ValueError, KeyError):
-                self.checkEnd(line)
+                self.check_end(line)
 
-    def getDataFrame(self):
+    def get_dataframe(self):
         """[summary]
 
         Returns
@@ -321,7 +321,7 @@ class ExtractOther(Extract):
             'success': False,
         }
 
-    def readLine(self, line):
+    def read_line(self, line):
         """[summary]
 
         Parameters
@@ -359,7 +359,7 @@ class ExtractFile:
 
     """
 
-    def extractFile(self, filename):
+    def extract_file(self, filename):
         """[summary]
 
         Parameters
@@ -375,11 +375,11 @@ class ExtractFile:
 
         with open(filename, 'r') as outfile:
 
-            cur_data = self.extractJob(outfile, filename)
+            cur_data = self.extract_job(outfile, filename)
 
             return cur_data
 
-    def extractJob(self, outfile, filename):
+    def extract_job(self, outfile, filename):
         """[summary]
 
         Parameters
@@ -397,29 +397,29 @@ class ExtractFile:
 
         cur_data = adc_data.ADCData(filename)
 
-        exRem = self.extractREM(outfile)
+        exRem = self.extract_rem(outfile)
         exOth = ExtractOther()
 
         if 'FANO'.casefold() in exRem.data['METHOD'].casefold():
-            cur_data.setData(['pump', 'probe', 'pump_probe'],
-                             self.extractFANO(outfile))
+            cur_data.set_data(['pump', 'probe', 'pump_probe'],
+                             self.extract_fano(outfile))
         elif 'adc' in exRem.data['METHOD'].casefold():
-            cur_data.setData('adc', self.extractADC(outfile))
+            cur_data.set_data('adc', self.extract_adc(outfile))
         else:
             # This has to be rewritten
             pass
 
         try:
             for line in outfile:
-                exOth.readLine(line)
+                exOth.read_line(line)
         except NotEndOfCalcError:
-            cur_data = self.extractJob(outfile, filename)
+            cur_data = self.extract_job(outfile, filename)
 
-        cur_data.setOtherAttr(exRem, exOth)
+        cur_data.set_other_attr(exRem, exOth)
 
         return cur_data
 
-    def extractREM(self, outfile):
+    def extract_rem(self, outfile):
         """[summary]
 
         Parameters
@@ -433,17 +433,17 @@ class ExtractFile:
             [description]
         """
 
-        exRem = ExtractRem()
+        exRem = extract_rem()
 
         for line in outfile:
             if not exRem.finished:
-                exRem.readLine(line)
+                exRem.read_line(line)
             else:
                 break
 
         return exRem
 
-    def extractFANO(self, outfile):
+    def extract_fano(self, outfile):
         """[summary]
 
         Parameters
@@ -463,19 +463,19 @@ class ExtractFile:
 
         for line in outfile:
             if not exADC.finished:
-                exADC.readLine(line)
+                exADC.read_line(line)
 
             elif not exCVS.finished:
-                exCVS.readLine(line)
+                exCVS.read_line(line)
 
             elif not exPuP.finished:
-                exPuP.readLine(line)
+                exPuP.read_line(line)
             else:
                 break
 
-        return exCVS.getDataFrame(), exADC.getDataFrame(), exPuP.getDataFrame()
+        return exCVS.get_dataframe(), exADC.get_dataframe(), exPuP.get_dataframe()
 
-    def extractADC(self, outfile):
+    def extract_adc(self, outfile):
         """[summary]
 
         Parameters
@@ -493,13 +493,13 @@ class ExtractFile:
 
         for line in outfile:
             if not exADC.finished:
-                exADC.readLine(line)
+                exADC.read_line(line)
             else:
                 break
 
-        return exADC.getDataFrame()
+        return exADC.get_dataframe()
 
-    def extractFolder(self, dirPath, pattern='*.out'):
+    def extract_dir(self, dirPath, pattern='*.out'):
         """[summary]
 
         Parameters
@@ -521,7 +521,7 @@ class ExtractFile:
         for filename in glob.glob(pattern):
             try:
                 print('extracting: {} ...'.format(filename))
-                folder_data[filename] = self.extractFile(filename)
+                folder_data[filename] = self.extract_file(filename)
             except (KeyError):
                 print('Extraction of {} failed'.format(filename))
 
@@ -531,4 +531,4 @@ class ExtractFile:
 if __name__ == "__main__":
     filepath = '/export/home/ccprak10/scripts/qextract/data/'
     exFile = ExtractFile()
-    data = exFile.extractFolder(filepath)
+    data = exFile.extract_dir(filepath)

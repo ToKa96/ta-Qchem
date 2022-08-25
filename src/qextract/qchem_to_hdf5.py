@@ -3,6 +3,7 @@
     
 import os
 import glob
+from typing import Protocol, Any
 import h5py
 
 from qextract import fano_extract
@@ -32,6 +33,14 @@ def write_hdf5(qchem_calc, hdf5_filename, file_structur='TRAJ/TIME', h5_mode='a'
                           extractor=extractor, pop_path=pop_path, get_pop=get_pop, **kwargs)
 
 
+class PumpProbeData(Protocol):
+    
+    def get_pump_states() ->  Any:
+        ...
+        
+    def get_pump_probe_data(pump: str) -> dict:
+        ...
+
 class QChemHDF5():
     
     def create_hdf5(self, pathname, filename, file_structur='traj/time', h5_mode='a', pop_path=None, extractor=None, get_pop=None, **kwargs):
@@ -58,7 +67,7 @@ class QChemHDF5():
 
         if extractor is None:
             from qextract import fano_extract
-            self.extractor = fano_extract.ExtractFile().extractFile
+            self.extractor = fano_extract.ExtractFile().extract_file
         else:
             self.extractor = extractor
 
@@ -131,17 +140,22 @@ class QChemHDF5():
             groupstr = self._get_group_from_path(filepath)
             # iterates over all unique pump state (indeces)
             # FIXME: this might genereate problems
-            # TODO: rewrite ADCData and extractor in a way which is more flexible!      
-            for pump in current_file_data.get_pump_states():
+            # add pump_states as data? maybe not necessary here
+            # TODO: rewrite ADCData and extractor in a way which is more flexible!
+            self._set_data(hdf5_file, groupstr, current_file_data)      
+                    
+    def _set_data(self, hdf5_file, groupstr, pump_probe_data: PumpProbeData) -> None:
+            for pump in pump_probe_data.get_pump_states():
                 # creates the base names for the datasets belonging to this pump state
                 # it seems white spaces in the group/ dataset names create problems ...
                 pump_name = pump.replace(' ', '_')
                 dataset_name = groupstr + pump_name + '/'
                 
-                data = current_file_data.get_pump_probe_data(pump)
+                data = pump_probe_data.get_pump_probe_data(pump)
                 
                 for key in data.keys():
                     hdf5_file.create_dataset(dataset_name + key, data=data[key])
+        
     
     def _get_file_structur(self, file_structur):
         file_structur.upper()
